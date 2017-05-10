@@ -1,6 +1,7 @@
 /**
  * Created by Vincent on 5/10/2017.
  */
+/*
 $(document).ready(function(){
     $('button').click(function(){
         console.log('click initiated');
@@ -16,3 +17,4 @@ $(document).ready(function(){
         console.log('End of click function');
     });
 });
+*/

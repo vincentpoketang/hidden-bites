@@ -14,7 +14,7 @@ function clickHandler(){
 function ajaxCall(){
     $.ajax({
         dataType: 'json',
-        url: ' ',
+        url: 'static_data.json',
 
         success: function(result){
             console.log('success:' ,result);

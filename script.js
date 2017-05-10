@@ -4,24 +4,16 @@
 $(document).ready(function(){
     clickHandler();
 });
+
 function clickHandler(){
-    $('button').click(function(){
-        console.log('click initiated');
+    $('button').click(function() {
+        console.log('clicklick');
         ajaxCall();
-    });
+    })
 }
 
-function ajaxCall(){
-    $.ajax({
-        dataType: 'json',
-        url: 'static_data.json',
-
-        success: function(result){
-            console.log('success:' ,result);
-        },
-        error: function (result) {
-            console.log('error ', result);
-        }
-    });
-    console.log('');
+function ajaxCall() {
+    $.getJSON("static_data.json", function (data) {
+        console.log(data);
+    })
 }

@@ -1,0 +1,18 @@
+.outside_div{
+    height:90vh;
+    width:90vw;
+}
+.outline{
+    border: 1px solid black;
+    display: inline-block;
+    padding: 7% 5% 30% 5%;;
+    margin: 5%;
+}
+button{
+    left: 69%;
+    top: 1em;
+    position: relative;
+}
+p{
+    margin:2% 0 2% 0;
+}

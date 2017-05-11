@@ -30,9 +30,11 @@ $BUSINESS_PATH = "/v3/businesses/";  // Business ID will come after slash.
 $TOKEN_PATH = "/oauth2/token";
 $GRANT_TYPE = "client_credentials";
 // Defaults for our simple example.
-$DEFAULT_TERM = '"hole in the wall" tacos';
+$DEFAULT_TERM = 'hole in the wall';
 $DEFAULT_LOCATION = "irvine, ca";
 $SEARCH_LIMIT = 49;
+$RADIUS = 16000;
+$PRICE = '1,2';
 /**
  * Given a bearer token, send a GET request to the API.
  *
@@ -137,6 +139,9 @@ function search($bearer_token, $term, $location) {
     $url_params['term'] = $term;
     $url_params['location'] = $location;
     $url_params['limit'] = $GLOBALS['SEARCH_LIMIT'];
+    $url_params['radius'] = $GLOBALS['RADIUS'];
+    $url_params['price'] = $GLOBALS['PRICE'];
+
 
     return request($bearer_token, $GLOBALS['API_HOST'], $GLOBALS['SEARCH_PATH'], $url_params);
 }
@@ -147,11 +152,11 @@ function search($bearer_token, $term, $location) {
  * @param    $business_id    The ID of the business to query
  * @return   The JSON response from the request
  */
-function get_business($bearer_token, $business_id) {
-    $business_path = $GLOBALS['BUSINESS_PATH'] . urlencode($business_id);
-
-    return request($bearer_token, $GLOBALS['API_HOST'], $business_path);
-}
+//function get_business($bearer_token, $business_id) {
+//    $business_path = $GLOBALS['BUSINESS_PATH'] . urlencode($business_id);
+//
+//    return request($bearer_token, $GLOBALS['API_HOST'], $business_path);
+//}
 /**
  * Queries the API by the input values from the user
  *
@@ -161,22 +166,21 @@ function get_business($bearer_token, $business_id) {
 function query_api($term, $location) {
     $bearer_token = obtain_bearer_token();
     $response = json_decode(search($bearer_token, $term, $location));
-    for($i=0; $i < 4; $i++){
-        $pretty_response = json_encode($response->businesses[$i], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $pretty_response = json_encode($response->businesses, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         print_r($pretty_response);
-    }
-    $business_id = $response->businesses[0]->id;
+
+    //$business_id = $response->businesses[0]->id;
 //    print sprintf(
 //        "%d businesses found, querying business info for the top result \"%s\"\n\n",
 //        count($response->businesses),
 //        $business_id
 //    );
 
-    $response = get_business($bearer_token, $business_id);
+    //$response = get_business($bearer_token, $business_id);
 
    //print sprintf("Result for business \"%s\" found:\n", $business_id);
-    $pretty_response = json_encode(json_decode($response), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-    print "$pretty_response\n";
+    //$pretty_response = json_encode(json_decode($response), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    //print "$pretty_response\n";
 }
 
 /**

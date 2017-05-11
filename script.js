@@ -5,6 +5,8 @@ $(document).ready(function(){
     clickHandler();
 });
 
+var restaurants = [];
+
 function clickHandler(){
     $('button').click(function() {
         console.log('clicklick');
@@ -13,7 +15,17 @@ function clickHandler(){
 }
 
 function ajaxCall() {
-    $.getJSON("static_data.json", function (data) {
-        console.log(data);
+    $.ajax({
+        method : 'get',
+        dataType : 'json',
+        url : 'static.php',
+        success: function (response){
+        restaurants.push(response);
+        console.log(restaurants);
+        },
+        error: function (response){
+            console.log('Sorry nothing available')
+        }
     })
 }
+

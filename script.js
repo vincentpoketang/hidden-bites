@@ -1,6 +1,9 @@
 /**
  * Created by C4.17 Team 4 Hackathon 2 on 5/10/2017.
  */
+/**
+ * load stuff when document start
+ */
 $(document).ready(function(){
     clickHandler();
     getLocation();
@@ -187,7 +190,7 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(static_data.region.center.latitude,static_data.region.center.longitude),
         zoom: 15,
-        mapTypeId: 'roadmap'
+        mapTypeId: 'terrain'
     });
     for(var i = 0; i < static_data.businesses.length; i++){
         var marker = new google.maps.Marker({

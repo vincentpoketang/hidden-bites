@@ -10,27 +10,55 @@
             async defer></script>
     <script type="text/javascript" src="script.js"></script>
     <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <!--<h1>Hole-in-the-Wall Restaurant Finder</h1>-->
 <div class="outside_div">
     <div class="beforeSearch">
-        <div class="logo">logo</div>
-        <p class="para">Type of food</p>
-        <input type="text" name="typeOfFood"></br>
-        <p class="para">Address</p>
-        <input type="text" name="address"></br>
-        <button id='FirstButton'>search</button>
+        <div class="logo" id="beforeLogo"><img src="img/Commons.png" height="200" width="155"/></div>
+        <form class="" id="beforeForm">
+            <div class="form-group col-xs-12">
+                <!--<label class="col-xs-12 " for="inputdefault">Type of food</label>-->
+                <input class="form-control input-lg front_input" id="input_food" type="text" name="typeOfFood"placeholder="Type of Food">
+            </div>
+            <div class="form-group col-xs-12">
+                <!--<label class="col-xs-12" for="inputdefault">Address</label>-->
+                <input class="form-control input-lg front_input " id="input_location" type="text" name="address" placeholder="Address">
+            </div>
+            <button id='firstButton' class="btn btn-default .btn-lg" type="button">Search</button>
+        </form>
     </div>
     <!-- show this with .hide when the button is clicked-->
     <div class="AfterSearch">
-        <div class="header">
-            <div class="logo">logo</div>
-            <h3>Hole in the Wall</h3>
-            <input type="text" name="typeOfFood">
-            <input type="text" name="address">
-            <button>search</button>
-        </div>
+            <!--<nav role="navigation" class="navbar navbar-default">-->
+                <div class="navbar-header col-xs-12">
+                    <a class="navbar-brand" id="afterLogo"><img src="img/Commons.png" height="100" width="80"/></a>
+                </div>
+                <div id="navbarCollapse" class="collapse navbar-collapse">
+                    <h3 class="nav navbar-center col-sm-12">Hole in the Wall</h3>
+                    <form role="search" class="navbar-form navbar-right">
+                        <div class="form-group col-sm-12">
+                            <input type="text" placeholder="Type of Food" class="form-control">
+                            <input type="text" placeholder="Address" class="form-control">
+                            <button id='secondButton' class="btn btn-default .btn-lg" type="button">Search</button>
+                        </div>
+                    </form>
+                </div>
+            <!--</nav>-->
+        <!--<div class="header">-->
+            <!--<div id="afterLogo" class="col-xs-3 logo "><img src="img/Commons.png" height="100" width="80"/></div>-->
+            <!--<h3 class="col-xs-3">Hole in the Wall</h3>-->
+            <!--<form class="col-xs-3">-->
+                <!--<div class="input-group input-group-lg">-->
+                    <!--<input type="text" class="form-control" placeholder="Search">-->
+                    <!--<input type="text" class="form-control" placeholder="Search">-->
+                <!--</div>-->
+            <!--</form>-->
+            <!--&lt;!&ndash;<input class="input- col-sm-3 col-xs-12" type="text" name="typeOfFood">&ndash;&gt;-->
+            <!--&lt;!&ndash;<input class="input- col-sm-3 col-xs-12" type="text" name="address">&ndash;&gt;-->
+            <!--<button id='secondButton' class="btn btn-default .btn-lg col-xs-3 col-xs-12" type="button">search</button>-->
+        <!--</div>-->
         <div id="map"></div>
     </div>
 </div>

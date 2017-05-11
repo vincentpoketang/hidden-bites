@@ -4,9 +4,14 @@
 $(document).ready(function(){
     clickHandler();
 });
-
+/**
+ * restaurants - global array to hold restaurants
+ * @type {Array}
+ */
 var restaurants = [];
-
+/**
+ * clickHandler - Event Handler when user clicks the search button
+ */
 function clickHandler(){
     $('#firstButton').click(function() {
         console.log('clicklick');
@@ -14,7 +19,10 @@ function clickHandler(){
         ajaxCall();
     })
 }
-
+/**
+ * ajaxCall - get json info from static.php and if it is success, push info to restaurants,
+ *              else console.log an error
+ */
 function ajaxCall() {
     $.ajax({
         method : 'get',
@@ -106,10 +114,14 @@ var static_data = {
         }
     }
 };
-
+/**
+ * map - global object for map
+ * @type {Object}
+ */
 var map;
-
-
+/**
+ * initMap - initialize map object and setting up markers
+ */
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(static_data.region.center.latitude,static_data.region.center.longitude),
@@ -128,22 +140,27 @@ function initMap() {
         });
     }
 }
+/**
+ * formatAddress - format the address that is passed and return the formatted address
+ * @param address
+ * @returns {string}
+ */
 function formatAddress(address){
     return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
 }
+/**
+ * modalEdits - set up modal and modify it
+ * @param business
+ */
 function modalEdits(business){
     $('.modal-title').text(business.name);
-    $('.modal-body').empty();
-    var left_div = $('<div>',{
-        class: 'modal-div',
-    });
-    var right_div = $('<div>',{
+    var div = $('<div>',{
         class: 'modal-div'
     });
     var img = $('<img>',{
         src: business.image_url,
         css: {
-            width: '200px'
+            height: '300px'
         }
     });
     var address = $('<h4>',{
@@ -165,43 +182,10 @@ function modalEdits(business){
     for(var i = 0; i < business.rating; i++){
         rating_stars += '* ';
     }
-    var rating_info = $('<h3>',{
+    var rating_info = $('<h4>',{
         text: rating_stars
     });
-    $(left_div).append(img);
-    $(right_div).append(address,address_info,rating,rating_info);
-    $('.modal-body').append(left_div,right_div);
+    $(div).append(img,address,address_info,categories,categories_info,rating,rating_info);
+    $('.modal-body').empty().append(div);
     $('#myModal').modal('show');
 }
-// {
-//     "rating": 4,
-//     "price": "$",
-//     "phone": "+14152520800",
-//     "id": "four-barrel-coffee-san-francisco",
-//     "is_closed": false,
-//     "categories": [
-//     {
-//         "alias": "coffee",
-//         "title": "Coffee & Tea"
-//     }
-// ],
-//     "review_count": 1738,
-//     "name": "Four Barrel Coffee",
-//     "url": "https://www.yelp.com/biz/four-barrel-coffee-san-francisco",
-//     "coordinates": {
-//     "latitude": 37.7670169511878,
-//         "longitude": -122.42184275
-// },
-//     "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
-//     "location": {
-//     "city": "San Francisco",
-//         "country": "US",
-//         "address2": "",
-//         "address3": "",
-//         "state": "CA",
-//         "address1": "375 Valencia St",
-//         "zip_code": "94103"
-// },
-//     "distance": 1604.23,
-//     "transactions": ["pickup", "delivery"]
-// }

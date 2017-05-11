@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Hole-in-the-Wall Restaurant Finder</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto&callback=initMap"
+            async defer></script>
     <script type="text/javascript" src="script.js"></script>
     <link rel="stylesheet" href="styles.css" />
 </head>
@@ -29,7 +30,7 @@
                 <input type="text" name="address">
                 <button>search</button>
             </div>
-            map
+            <div id="map"></div>
         </div>
 
     </div>

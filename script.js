@@ -6,10 +6,10 @@ $(document).ready(function(){
 });
 
 function clickHandler(){
-    $('button').click(function() {
+    $('#firstButton').click(function() {
         console.log('clicklick');
-        ajaxCall();
         $('.beforeSearch').addClass('hide');
+        ajaxCall();
     })
 }
 

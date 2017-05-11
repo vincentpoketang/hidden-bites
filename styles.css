@@ -7,40 +7,70 @@
     display: inline-block;
     position: absolute;
     z-index: 1;
-    background: red;
-    height:99%;
-    width:99%;
+    background-image: url("img/11.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height:100%;
+    width:100%;
+    text-align: center;
 }
-.FirstButton{
+#beforeForm{
+    top:10%;
+}
+.front_input{
+    width: 40%;
+    margin-left: 30%;
+}
+.firstButton{
     left: 69%;
     top: 1em;
     position: relative;
+    width: 5em;
+}
+#beforeLogo{
+    margin-top: 6%;
 }
 .logo{
     position: static;
     display:inline-block;
 }
+#afterLogo{
+    margin: 9%;
+}
 .para{
     margin:2% 0 2% 0;
 }
 .header{
-    border: 2px solid black;
     padding: 3%;
     text-align: center;
 }
 h3{
-    display: inline-block;
-    margin: 0 22%;
+    margin: 0 0 0 40%;
+    font-size: 4vmin;;
 }
 .AfterSearch{
     border: 1px solid black;
     display: inline-block;
     position: absolute;
     background: red;
-    height: 98%;
+    height: 95%;
     width: 99%;
     margin: 0;
     padding: 0;
+}
+#navbarCollapse{
+    background-image: url("img/3.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.back_input{
+     width: 40%;
+     margin-left: 30%;
+ }
+.input-group .form-control {
+    z-index: 0;
 }
 #map{
     height:90%;

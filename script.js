@@ -20,8 +20,8 @@ var restaurants = [];
  * @type {{lat: number, lng: number}}
  */
 var user_location = {
-    lat: 33.6349187,
-    lng: -117.7404658
+    lat: 0,
+    lng: 0
 };
 
 /**
@@ -34,15 +34,20 @@ function clickHandler(){
         ajaxCall();
     })
 }
+
 /**
  * ajaxCall - get json info from static.php and if it is success, push info to restaurants,
  *              else console.log an error
  */
-
 function ajaxCall() {
     $.ajax({
         method : 'get',
         dataType : 'json',
+        data : {
+            'location' : 'San Francisco, CA',
+            'term' : 'dinner',
+            //'price' :
+        },
         url : 'static.php',
         success: function (response){
         restaurants.push(response);
@@ -50,6 +55,24 @@ function ajaxCall() {
         },
         error: function (response){
             console.log('Sorry nothing available')
+        }
+    })
+}
+
+/**
+ * getAddressFromCoords - using Google's Reverse Geocoding API, get
+ * a human-readable address from the user's location coordinates
+ */
+function getAddressFromCoords() {
+    $.ajax({
+        method : 'get',
+        dataType : 'json',
+        url : 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + user_location.lat + ',' + user_location.lng + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
+        success: function (response){
+            $('#input_food').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
+        },
+        error: function (response){
+            console.log('Unable to convert user\'s coordinates into address: ', response);
         }
     })
 }
@@ -75,6 +98,7 @@ function savePosition(position) {
         lat: position.coords.latitude,
         lng: position.coords.longitude
     };
+    getAddressFromCoords();
 }
 
 /**

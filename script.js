@@ -17,8 +17,8 @@ var restaurants = [];
  * @type {{lat: number, lng: number}}
  */
 var user_location = {
-    lat: 0,
-    lng: 0
+    lat: 33.634910999999995,
+    lng: -117.7404998
 };
 
 /**

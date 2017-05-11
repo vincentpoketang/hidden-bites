@@ -3,8 +3,27 @@
  */
 $(document).ready(function(){
     clickHandler();
+    getLocation();
 });
 
+/**
+ * restaurants - global array to hold restaurants
+ * @type {Array}
+ */
+var restaurants = [];
+
+/**
+ * as an absolute worst-case scenario we default the user location to the LF HQ
+ * @type {{lat: number, lng: number}}
+ */
+var user_location = {
+    lat: 33.6349187,
+    lng: -117.7404658
+};
+
+/**
+ * clickHandler - Event Handler when user clicks the search button
+ */
 function clickHandler(){
     $('#firstButton').click(function() {
         console.log('clicklick');
@@ -12,11 +31,70 @@ function clickHandler(){
         ajaxCall();
     })
 }
+/**
+ * ajaxCall - get json info from static.php and if it is success, push info to restaurants,
+ *              else console.log an error
+ */
 
 function ajaxCall() {
-    $.getJSON("static_data.json", function (data) {
-        console.log(data);
+    $.ajax({
+        method : 'get',
+        dataType : 'json',
+        url : 'static.php',
+        success: function (response){
+        restaurants.push(response);
+        console.log(restaurants);
+        },
+        error: function (response){
+            console.log('Sorry nothing available')
+        }
     })
+}
+
+/**
+ * getLocation - Get the user's current location using the HTML5 geolocation API,
+ * and pass it in object form to the savePosition function
+ */
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(savePosition, positionError);
+    } else {
+        console.log("Geolocation is not supported by this browser.");
+    }
+}
+
+/**
+ * savePosition - Takes the position object and saves the lat/lng coords to the user location object
+ * @param {object} position
+ */
+function savePosition(position) {
+    user_location = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+    };
+}
+
+/**
+ * positionError - handles errors if we're unable to determine the user's location
+ * @param {object} error
+ */
+function positionError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            console.log("User denied the request for Geolocation.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            console.log("Location information is unavailable.");
+            break;
+        case error.TIMEOUT:
+            console.log("The request to get user location timed out.");
+            break;
+        case error.UNKNOWN_ERROR:
+            console.log("An unknown error occurred.");
+            break;
+        default:
+            console.log("An unknown error occurred.");
+    }
 }
 
 var static_data = {
@@ -96,9 +174,15 @@ var static_data = {
     }
 };
 
+/**
+ * map - global object for map
+ * @type {Object}
+ */
 var map;
 
-
+/**
+ * initMap - initialize map object and setting up markers
+ */
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(static_data.region.center.latitude,static_data.region.center.longitude),
@@ -111,5 +195,60 @@ function initMap() {
             map:map,
             label: ""+(i+1)
         });
+        marker.addListener('click',function(){
+            var business = static_data.businesses[this.label-1];
+            modalEdits(business);
+        });
     }
+}
+
+/**
+ * formatAddress - format the address that is passed and return the formatted address
+ * @param address
+ * @returns {string}
+ */
+function formatAddress(address){
+    return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
+}
+
+/**
+ * modalEdits - set up modal and modify it
+ * @param business
+ */
+function modalEdits(business){
+    $('.modal-title').text(business.name);
+    var div = $('<div>',{
+        class: 'modal-div'
+    });
+    var img = $('<img>',{
+        src: business.image_url,
+        css: {
+            height: '300px'
+        }
+    });
+    var address = $('<h4>',{
+        text: 'Address'
+    });
+    var address_info = $('<p>',{
+        text: formatAddress(business.location)
+    });
+    var categories = $('<h4>',{
+        text: 'Categories'
+    });
+    var categories_info = $('<p>',{
+        text: business.categories[0].title
+    });
+    var rating = $('<h4>',{
+        text: 'Rating'
+    });
+    var rating_stars = '';
+    for(var i = 0; i < business.rating; i++){
+        rating_stars += '* ';
+    }
+    var rating_info = $('<h4>',{
+        text: rating_stars
+    });
+    $(div).append(img,address,address_info,categories,categories_info,rating,rating_info);
+    $('.modal-body').empty().append(div);
+    $('#myModal').modal('show');
 }

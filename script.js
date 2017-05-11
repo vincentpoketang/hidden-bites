@@ -3,12 +3,24 @@
  */
 $(document).ready(function(){
     clickHandler();
+    getLocation();
 });
+
 /**
  * restaurants - global array to hold restaurants
  * @type {Array}
  */
 var restaurants = [];
+
+/**
+ * as an absolute worst-case scenario we default the user location to the LF HQ
+ * @type {{lat: number, lng: number}}
+ */
+var user_location = {
+    lat: 33.6349187,
+    lng: -117.7404658
+};
+
 /**
  * clickHandler - Event Handler when user clicks the search button
  */
@@ -23,6 +35,7 @@ function clickHandler(){
  * ajaxCall - get json info from static.php and if it is success, push info to restaurants,
  *              else console.log an error
  */
+
 function ajaxCall() {
     $.ajax({
         method : 'get',
@@ -36,6 +49,52 @@ function ajaxCall() {
             console.log('Sorry nothing available')
         }
     })
+}
+
+/**
+ * getLocation - Get the user's current location using the HTML5 geolocation API,
+ * and pass it in object form to the savePosition function
+ */
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(savePosition, positionError);
+    } else {
+        console.log("Geolocation is not supported by this browser.");
+    }
+}
+
+/**
+ * savePosition - Takes the position object and saves the lat/lng coords to the user location object
+ * @param {object} position
+ */
+function savePosition(position) {
+    user_location = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+    };
+}
+
+/**
+ * positionError - handles errors if we're unable to determine the user's location
+ * @param {object} error
+ */
+function positionError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            console.log("User denied the request for Geolocation.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            console.log("Location information is unavailable.");
+            break;
+        case error.TIMEOUT:
+            console.log("The request to get user location timed out.");
+            break;
+        case error.UNKNOWN_ERROR:
+            console.log("An unknown error occurred.");
+            break;
+        default:
+            console.log("An unknown error occurred.");
+    }
 }
 
 var static_data = {
@@ -114,11 +173,13 @@ var static_data = {
         }
     }
 };
+
 /**
  * map - global object for map
  * @type {Object}
  */
 var map;
+
 /**
  * initMap - initialize map object and setting up markers
  */
@@ -140,6 +201,7 @@ function initMap() {
         });
     }
 }
+
 /**
  * formatAddress - format the address that is passed and return the formatted address
  * @param address
@@ -148,6 +210,7 @@ function initMap() {
 function formatAddress(address){
     return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
 }
+
 /**
  * modalEdits - set up modal and modify it
  * @param business

@@ -3,7 +3,7 @@
  */
 $(document).ready(function(){
     clickHandler();
-    getLocation();
+    getCurrentLocation();
 });
 
 /**
@@ -47,8 +47,8 @@ function ajaxCall() {
         },
         url : 'static.php',
         success: function (response){
-        restaurants.push(response);
-        console.log(restaurants);
+            restaurants = response;
+            console.log(restaurants);
         },
         error: function (response){
             console.log('Sorry nothing available')
@@ -78,7 +78,7 @@ function getAddressFromCoords() {
  * getLocation - Get the user's current location using the HTML5 geolocation API,
  * and pass it in object form to the savePosition function
  */
-function getLocation() {
+function getCurrentLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(savePosition, positionError);
     } else {

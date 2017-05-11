@@ -6,7 +6,7 @@
  */
 $(document).ready(function(){
     clickHandler();
-    getLocation();
+    getCurrentLocation();
 });
 
 /**
@@ -20,8 +20,8 @@ var restaurants = [];
  * @type {{lat: number, lng: number}}
  */
 var user_location = {
-    lat: 0,
-    lng: 0
+    lat: 33.634910999999995,
+    lng: -117.7404998
 };
 
 /**
@@ -81,7 +81,7 @@ function getAddressFromCoords() {
  * getLocation - Get the user's current location using the HTML5 geolocation API,
  * and pass it in object form to the savePosition function
  */
-function getLocation() {
+function getCurrentLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(savePosition, positionError);
     } else {
@@ -139,9 +139,9 @@ function initMap() {
         zoom: 15,
         mapTypeId: 'terrain'
     });
-    for(var i = 0; i < restaurants.businesses.length; i++){
+    for(var i = 0; i < restaurants.length; i++){
         var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(restaurants[i].coordinates.latitude,restaurants.businesses[i].coordinates.longitude),
+            position: new google.maps.LatLng(restaurants[i].coordinates.latitude,restaurants[i].coordinates.longitude),
             map:map,
             label: ""+(i+1)
         });

@@ -3,7 +3,6 @@
     width:90vw;
 }
 .beforeSearch{
-    border: 1px solid black;
     display: inline-block;
     position: absolute;
     z-index: 1;
@@ -16,11 +15,13 @@
     text-align: center;
 }
 #beforeForm{
-    top:10%;
+    margin:3%
 }
 .front_input{
-    width: 40%;
-    margin-left: 30%;
+    width: 90%;
+    max-width:400px;
+    margin: 5px auto ;
+
 }
 .firstButton{
     left: 69%;
@@ -36,7 +37,7 @@
     display:inline-block;
 }
 #afterLogo{
-    margin: 9%;
+    margin: 1%;
 }
 .para{
     margin:2% 0 2% 0;
@@ -50,10 +51,8 @@ h3{
     font-size: 4vmin;;
 }
 .AfterSearch{
-    border: 1px solid black;
     display: inline-block;
     position: absolute;
-    background: red;
     height: 95%;
     width: 99%;
     margin: 0;
@@ -63,7 +62,10 @@ h3{
     background-image: url("img/3.jpg");
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center;
+    /*background-position: center;*/
+}
+.navbar-header{
+    height:7%;
 }
 .back_input{
      width: 40%;

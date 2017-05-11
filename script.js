@@ -40,6 +40,11 @@ function ajaxCall() {
     $.ajax({
         method : 'get',
         dataType : 'json',
+        data : {
+            'location' : 'San Francisco, CA',
+            'term' : 'dinner',
+            //'price' :
+        },
         url : 'static.php',
         success: function (response){
         restaurants.push(response);

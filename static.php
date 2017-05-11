@@ -32,7 +32,7 @@ $GRANT_TYPE = "client_credentials";
 // Defaults for our simple example.
 $DEFAULT_TERM = 'hole in the wall';
 $DEFAULT_LOCATION = "irvine, ca";
-$SEARCH_LIMIT = 49;
+$LIMIT = 49;
 $RADIUS = 16000;
 $PRICE = '1,2';
 /**
@@ -134,7 +134,7 @@ function request($bearer_token, $host, $path, $url_params = array()) {
  * @return   The JSON response from the request
  */
 function search($bearer_token, $term, $location) {
-    $url_params = array();
+    $url_params = [];
 
     $url_params['term'] = $term;
     $url_params['location'] = $location;
@@ -191,8 +191,12 @@ $longopts  = array(
     "location::",
 );
 
-$options = getopt("", $longopts);
-$term = $options['term'] ?: $GLOBALS['DEFAULT_TERM'];
-$location = $options['location'] ?: $GLOBALS['DEFAULT_LOCATION'];
+//$term = $_GET['term'];
+//$location = $_GET['location'];
+
+
+//$options = getopt("", $longopts);
+$term = $_GET['term'] ?: $GLOBALS['DEFAULT_TERM'];
+$location = $_GET['location'] ?: $GLOBALS['DEFAULT_LOCATION'];
 query_api($term, $location);
 ?>

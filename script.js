@@ -9,6 +9,7 @@ function clickHandler(){
     $('button').click(function() {
         console.log('clicklick');
         ajaxCall();
+        $('.beforeSearch').addClass('hide');
     })
 }
 

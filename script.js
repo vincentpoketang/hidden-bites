@@ -123,9 +123,6 @@ function initMap() {
             label: ""+(i+1)
         });
         marker.addListener('click',function(){
-            console.log(this.position.lat());
-            console.log(this.position.lng());
-            console.log(this.label - 1);
             var business = static_data.businesses[this.label-1];
             modalEdits(business);
         });
@@ -137,15 +134,74 @@ function formatAddress(address){
 function modalEdits(business){
     $('.modal-title').text(business.name);
     $('.modal-body').empty();
+    var left_div = $('<div>',{
+        class: 'modal-div',
+    });
+    var right_div = $('<div>',{
+        class: 'modal-div'
+    });
     var img = $('<img>',{
         src: business.image_url,
         css: {
             width: '200px'
         }
     });
-    var p = $('<p>',{
+    var address = $('<h4>',{
+        text: 'Address'
+    });
+    var address_info = $('<p>',{
         text: formatAddress(business.location)
     });
-    $('.modal-body').append(img,p);
+    var categories = $('<h4>',{
+        text: 'Categories'
+    });
+    var categories_info = $('<p>',{
+        text: business.categories[0].title
+    });
+    var rating = $('<h4>',{
+        text: 'Rating'
+    });
+    var rating_stars = '';
+    for(var i = 0; i < business.rating; i++){
+        rating_stars += '* ';
+    }
+    var rating_info = $('<h3>',{
+        text: rating_stars
+    });
+    $(left_div).append(img);
+    $(right_div).append(address,address_info,rating,rating_info);
+    $('.modal-body').append(left_div,right_div);
     $('#myModal').modal('show');
 }
+// {
+//     "rating": 4,
+//     "price": "$",
+//     "phone": "+14152520800",
+//     "id": "four-barrel-coffee-san-francisco",
+//     "is_closed": false,
+//     "categories": [
+//     {
+//         "alias": "coffee",
+//         "title": "Coffee & Tea"
+//     }
+// ],
+//     "review_count": 1738,
+//     "name": "Four Barrel Coffee",
+//     "url": "https://www.yelp.com/biz/four-barrel-coffee-san-francisco",
+//     "coordinates": {
+//     "latitude": 37.7670169511878,
+//         "longitude": -122.42184275
+// },
+//     "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
+//     "location": {
+//     "city": "San Francisco",
+//         "country": "US",
+//         "address2": "",
+//         "address3": "",
+//         "state": "CA",
+//         "address1": "375 Valencia St",
+//         "zip_code": "94103"
+// },
+//     "distance": 1604.23,
+//     "transactions": ["pickup", "delivery"]
+// }

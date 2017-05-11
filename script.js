@@ -15,10 +15,26 @@ function clickHandler(){
     })
 }
 
+// function ajaxPost(){
+//     $.post('static.php'),
+//         {
+//             $location : 'Irvine, CA',
+//             $term : 'dinner'
+//         },
+//         function (data, status) {
+//           console.log(data);
+//         }
+// }
+
 function ajaxCall() {
     $.ajax({
         method : 'get',
         dataType : 'json',
+        data : {
+            'location' : 'San Francisco, CA',
+            'term' : 'dinner',
+            //'price' :
+        },
         url : 'static.php',
         success: function (response){
         restaurants.push(response);

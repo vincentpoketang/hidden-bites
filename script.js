@@ -139,9 +139,9 @@ function initMap() {
         zoom: 15,
         mapTypeId: 'terrain'
     });
-    for(var i = 0; i < restaurants.businesses.length; i++){
+    for(var i = 0; i < restaurants.length; i++){
         var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(restaurants[i].coordinates.latitude,restaurants.businesses[i].coordinates.longitude),
+            position: new google.maps.LatLng(restaurants[i].coordinates.latitude,restaurants[i].coordinates.longitude),
             map:map,
             label: ""+(i+1)
         });

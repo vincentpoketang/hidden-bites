@@ -8,10 +8,10 @@ $(document).ready(function(){
 var restaurants = [];
 
 function clickHandler(){
-    $('button').click(function() {
+    $('#firstButton').click(function() {
         console.log('clicklick');
-        ajaxCall();
         $('.beforeSearch').addClass('hide');
+        ajaxCall();
     })
 }
 

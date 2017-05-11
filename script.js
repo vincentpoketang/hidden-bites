@@ -1,6 +1,9 @@
 /**
  * Created by C4.17 Team 4 Hackathon 2 on 5/10/2017.
  */
+/**
+ * load stuff when document start
+ */
 $(document).ready(function(){
     clickHandler();
     getLocation();
@@ -47,8 +50,8 @@ function ajaxCall() {
         },
         url : 'static.php',
         success: function (response){
-        restaurants.push(response);
-        console.log(restaurants);
+            restaurants = response;
+            console.log(restaurants);
         },
         error: function (response){
             console.log('Sorry nothing available')
@@ -121,83 +124,6 @@ function positionError(error) {
     }
 }
 
-var static_data = {
-    "total": 8228,
-    "businesses": [
-        {
-            "rating": 4,
-            "price": "$",
-            "phone": "+14152520800",
-            "id": "four-barrel-coffee-san-francisco",
-            "is_closed": false,
-            "categories": [
-                {
-                    "alias": "coffee",
-                    "title": "Coffee & Tea"
-                }
-            ],
-            "review_count": 1738,
-            "name": "Four Barrel Coffee",
-            "url": "https://www.yelp.com/biz/four-barrel-coffee-san-francisco",
-            "coordinates": {
-                "latitude": 37.7670169511878,
-                "longitude": -122.42184275
-            },
-            "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
-            "location": {
-                "city": "San Francisco",
-                "country": "US",
-                "address2": "",
-                "address3": "",
-                "state": "CA",
-                "address1": "375 Valencia St",
-                "zip_code": "94103"
-            },
-            "distance": 1604.23,
-            "transactions": ["pickup", "delivery"]
-        },
-        {
-            "rating": 4,
-            "price": "$",
-            "phone": "+14152520800",
-            "id": "four-barrel-coffee-san-francisco",
-            "is_closed": false,
-            "categories": [
-                {
-                    "alias": "coffee",
-                    "title": "Coffee & Tea"
-                }
-            ],
-            "review_count": 1738,
-            "name": "Painted Ladies",
-            "url": "https://www.yelp.com/biz/four-barrel-coffee-san-francisco",
-            "coordinates": {
-                "latitude": 37.7762593,
-                "longitude": -122.432758
-            },
-            "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
-            "location": {
-                "city": "San Francisco",
-                "country": "US",
-                "address2": "",
-                "address3": "",
-                "state": "CA",
-                "address1": "375 Valencia St",
-                "zip_code": "94103"
-            },
-            "distance": 1604.23,
-            "transactions": ["pickup", "delivery"]
-        }
-        // ...
-    ],
-    "region": {
-        "center": {
-            "latitude": 37.767413217936834,
-            "longitude": -122.42820739746094
-        }
-    }
-};
-
 /**
  * map - global object for map
  * @type {Object}
@@ -209,18 +135,18 @@ var map;
  */
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(static_data.region.center.latitude,static_data.region.center.longitude),
+        center: new google.maps.LatLng(restaurants[0].center.latitude,restaurants[0].center.longitude),
         zoom: 15,
-        mapTypeId: 'roadmap'
+        mapTypeId: 'terrain'
     });
-    for(var i = 0; i < static_data.businesses.length; i++){
+    for(var i = 0; i < restaurants.businesses.length; i++){
         var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(static_data.businesses[i].coordinates.latitude,static_data.businesses[i].coordinates.longitude),
+            position: new google.maps.LatLng(restaurants[i].coordinates.latitude,restaurants.businesses[i].coordinates.longitude),
             map:map,
             label: ""+(i+1)
         });
         marker.addListener('click',function(){
-            var business = static_data.businesses[this.label-1];
+            var business = restaurants[this.label-1];
             modalEdits(business);
         });
     }

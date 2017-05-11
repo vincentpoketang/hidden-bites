@@ -111,5 +111,30 @@ function initMap() {
             map:map,
             label: ""+(i+1)
         });
+        marker.addListener('click',function(){
+            console.log(this.position.lat());
+            console.log(this.position.lng());
+            console.log(this.label - 1);
+            var business = static_data.businesses[this.label-1];
+            modalEdits(business);
+        });
     }
+}
+function formatAddress(address){
+    return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
+}
+function modalEdits(business){
+    $('.modal-title').text(business.name);
+    $('.modal-body').empty();
+    var img = $('<img>',{
+        src: business.image_url,
+        css: {
+            width: '200px'
+        }
+    });
+    var p = $('<p>',{
+        text: formatAddress(business.location)
+    });
+    $('.modal-body').append(img,p);
+    $('#myModal').modal('show');
 }

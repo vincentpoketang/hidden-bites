@@ -4,36 +4,55 @@
     <meta charset="UTF-8">
     <title>Hole-in-the-Wall Restaurant Finder</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto&callback=initMap"
+            async defer></script>
     <script type="text/javascript" src="script.js"></script>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <!--<h1>Hole-in-the-Wall Restaurant Finder</h1>-->
-<div>
-    <div class="outside_div">
-        <div class="beforeSearch">
+<div class="outside_div">
+    <div class="beforeSearch">
+        <div class="logo">logo</div>
+        <p class="para">Type of food</p>
+        <input type="text" name="typeOfFood"></br>
+        <p class="para">Address</p>
+        <input type="text" name="address"></br>
+        <button id='FirstButton'>search</button>
+    </div>
+    <!-- show this with .hide when the button is clicked-->
+    <div class="AfterSearch">
+        <div class="header">
             <div class="logo">logo</div>
-            <p class="para">Type of food</p>
-            <input type="text" name="typeOfFood"></br>
-            <p class="para">Address</p>
-            <input type="text" name="address"></br>
-            <button id='FirstButton'>search</button>
+            <h3>Hole in the Wall</h3>
+            <input type="text" name="typeOfFood">
+            <input type="text" name="address">
+            <button>search</button>
         </div>
-        <!-- show this with .hide when the button is clicked-->
-        <div class="AfterSearch">
-            <div class="header">
-                <div class="logo">logo</div>
-                <h3>Hole in the Wall</h3>
-                <input type="text" name="typeOfFood">
-                <input type="text" name="address">
-                <button>search</button>
-            </div>
-            map
-        </div>
-
+        <div id="map"></div>
     </div>
 </div>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>

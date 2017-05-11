@@ -51,6 +51,7 @@ function ajaxCall() {
         url : 'static.php',
         success: function (response){
             restaurants = response;
+            initMap();
             console.log(restaurants);
         },
         error: function (response){

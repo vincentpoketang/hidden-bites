@@ -4,9 +4,14 @@
 $(document).ready(function(){
     clickHandler();
 });
-
+/**
+ * restaurants - global array to hold restaurants
+ * @type {Array}
+ */
 var restaurants = [];
-
+/**
+ * clickHandler - Event Handler when user clicks the search button
+ */
 function clickHandler(){
     $('#firstButton').click(function() {
         console.log('clicklick');
@@ -14,7 +19,10 @@ function clickHandler(){
         ajaxCall();
     })
 }
-
+/**
+ * ajaxCall - get json info from static.php and if it is success, push info to restaurants,
+ *              else console.log an error
+ */
 function ajaxCall() {
     $.ajax({
         method : 'get',
@@ -106,10 +114,14 @@ var static_data = {
         }
     }
 };
-
+/**
+ * map - global object for map
+ * @type {Object}
+ */
 var map;
-
-
+/**
+ * initMap - initialize map object and setting up markers
+ */
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(static_data.region.center.latitude,static_data.region.center.longitude),
@@ -123,29 +135,57 @@ function initMap() {
             label: ""+(i+1)
         });
         marker.addListener('click',function(){
-            console.log(this.position.lat());
-            console.log(this.position.lng());
-            console.log(this.label - 1);
             var business = static_data.businesses[this.label-1];
             modalEdits(business);
         });
     }
 }
+/**
+ * formatAddress - format the address that is passed and return the formatted address
+ * @param address
+ * @returns {string}
+ */
 function formatAddress(address){
     return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
 }
+/**
+ * modalEdits - set up modal and modify it
+ * @param business
+ */
 function modalEdits(business){
     $('.modal-title').text(business.name);
-    $('.modal-body').empty();
+    var div = $('<div>',{
+        class: 'modal-div'
+    });
     var img = $('<img>',{
         src: business.image_url,
         css: {
-            width: '200px'
+            height: '300px'
         }
     });
-    var p = $('<p>',{
+    var address = $('<h4>',{
+        text: 'Address'
+    });
+    var address_info = $('<p>',{
         text: formatAddress(business.location)
     });
-    $('.modal-body').append(img,p);
+    var categories = $('<h4>',{
+        text: 'Categories'
+    });
+    var categories_info = $('<p>',{
+        text: business.categories[0].title
+    });
+    var rating = $('<h4>',{
+        text: 'Rating'
+    });
+    var rating_stars = '';
+    for(var i = 0; i < business.rating; i++){
+        rating_stars += '* ';
+    }
+    var rating_info = $('<h4>',{
+        text: rating_stars
+    });
+    $(div).append(img,address,address_info,categories,categories_info,rating,rating_info);
+    $('.modal-body').empty().append(div);
     $('#myModal').modal('show');
 }

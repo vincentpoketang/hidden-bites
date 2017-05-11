@@ -135,7 +135,7 @@ var map;
  */
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(restaurants[0].center.latitude,restaurants[0].center.longitude),
+        center: new google.maps.LatLng(user_location.lat,user_location.lng),
         zoom: 15,
         mapTypeId: 'terrain'
     });

@@ -8,23 +8,58 @@
     <script>
 
 
-        var display_box;
+        var user_location = {
+            lat: 33.6349187,
+            lng: -117.7404658
+        };
 
+        /**
+         * getLocation - Get the user's current location using the HTML5 geolocation API,
+         * and pass it in object form to the savePosition function
+         */
         function getLocation() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
+                navigator.geolocation.getCurrentPosition(savePosition, positionError);
             } else {
-                display_box.html("Geolocation is not supported by this browser.");
+                console.log("Geolocation is not supported by this browser.");
             }
         }
 
-        function showPosition(position) {
-            display_box.html("Latitude: " + position.coords.latitude +
-                "<br>Longitude: " + position.coords.longitude);
+        /**
+         * savePosition - Takes the position object and saves the lat/lng coords to the user location object
+         * @param {object} position
+         */
+        function savePosition(position) {
+            user_location = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+        }
+
+        /**
+         * positionError - handles errors if we're unable to determine the user's location
+         * @param {object} error
+         */
+        function positionError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    console.log("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    console.log("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    console.log("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    console.log("An unknown error occurred.");
+                    break;
+                default:
+                    console.log("An unknown error occurred.");
+            }
         }
 
         $(document).ready(function() {
-            display_box = $("#info");
             getLocation();
         });
     </script>

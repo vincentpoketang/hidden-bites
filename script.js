@@ -7,10 +7,22 @@
 $(document).ready(function(){
     clickHandler();
     getCurrentLocation();
+
 });
 
 /**
- * restaurants - global array to hold restaurants
+ * wait for shift key to get pressed
+ * @
+ */
+
+$(document).keypress(function(e) {
+    if(e.which == 13) {
+        searchFunction();
+    }
+});
+
+/**
+ * restaurants - global array to hold restaurantsh
  * @type {Array}
  */
 var restaurants = [];
@@ -31,26 +43,32 @@ var search_location = user_location;
 /**
  * clickHandler - Event Handler when user clicks the search button
  */
-function clickHandler(){
-    $('#firstButton').click(function() {
-        console.log('clicklick');
-        search_term = 'hole in the wall ';
-        search_term += ($('#input_food').val());
-        search_location = $('#input_location').val();
 
-        ajaxCall(search_term, search_location);
-
-        $('.beforeSearch').removeClass('animated fadeInLeftBig');
-        $('.beforeSearch').addClass('animated fadeOutLeftBig');
-
-    });
-
-    $('#backToFront').click(function(){
-        $('.beforeSearch').removeClass('animated fadeOutLeftBig');
-        $('.beforeSearch').addClass('animated fadeInLeftBig');
-
+function clickHandler() {
+    $('#firstButton').click(function () {
+        searchFunction();
     });
 }
+
+
+function searchFunction() {
+    console.log('clicklick');
+    search_term = 'hole in the wall ';
+    search_term += ($('#input_food').val());
+    search_location = $('#input_location').val();
+
+    ajaxCall(search_term, search_location);
+
+    $('.beforeSearch').removeClass('animated fadeInLeftBig');
+    $('.beforeSearch').addClass('animated fadeOutLeftBig');
+
+};
+
+$('#backToFront').click(function(){
+    $('.beforeSearch').removeClass('animated fadeOutLeftBig');
+    $('.beforeSearch').addClass('animated fadeInLeftBig');
+
+});
 
 /**
  * ajaxCall - get json info from php file and if it is success, push info to restaurants,

@@ -1,22 +1,5 @@
 
 <?php
-/**
- * Yelp Fusion API code sample.
- *
- * This program demonstrates the capability of the Yelp Fusion API
- * by using the Business Search API to query for businesses by a
- * search term and location, and the Business API to query additional
- * information about the top result from the search query.
- *
- * Please refer to http://www.yelp.com/developers/v3/documentation
- * for the API documentation.
- *
- * Sample usage of the program:
- * `php sample.php --term="dinner" --location="San Francisco, CA"`
- */
-// OAuth credential placeholders that must be filled in by users.
-// You can find them on
-// https://www.yelp.com/developers/v3/manage_app
 
 require_once ('credentials.php');
 
@@ -26,10 +9,9 @@ assert($CLIENT_SECRET, "Please supply your client_secret.");
 // API constants, you shouldn't have to change these.
 $API_HOST = "https://api.yelp.com";
 $SEARCH_PATH = "/v3/businesses/search";
-$BUSINESS_PATH = "/v3/businesses/";  // Business ID will come after slash.
 $TOKEN_PATH = "/oauth2/token";
 $GRANT_TYPE = "client_credentials";
-// Defaults for our simple example.
+// Default search terms to fall back to in case the user does not have any inputs.
 $DEFAULT_TERM = 'hole in the wall';
 $DEFAULT_LOCATION = "irvine, ca";
 $LIMIT = 49;
@@ -86,7 +68,7 @@ function obtain_bearer_token() {
  *
  * @param    $bearer_token   API bearer token from obtain_bearer_token
  * @param    $host    The domain host of the API
- * @param    $path    The path of the API after the domain.
+ * @param    $path    The path of the API after the domain. In this case it will remain as the basic Yelp Search
  * @param    $url_params    Array of query-string parameters.
  * @return   The JSON response from the request
  */

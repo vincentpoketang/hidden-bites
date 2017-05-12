@@ -34,7 +34,7 @@ var search_location = user_location;
 function clickHandler(){
     $('#firstButton').click(function() {
         console.log('clicklick');
-
+        search_term = 'hole in the wall ';
         search_term += ($('#input_food').val());
         search_location = $('#input_location').val();
 
@@ -230,13 +230,27 @@ function modalEdits(business){
     var rating = $('<h4>',{
         text: 'Rating'
     });
-    var rating_stars = '';
-    for(var i = 0; i < business.rating; i++){
-        rating_stars += '* ';
-    }
-    var rating_info = $('<h4>',{
-        text: rating_stars
+    // var rating_stars = '';
+    // for(var i = 0; i < business.rating; i++){
+    //     rating_stars += '* ';
+    // }
+    var rating_info = $('<p>');
+    var full_star = $('<img>',{
+        src: "img/Star.png",
+        height: '20px'
     });
+    var half_star = $('<img>',{
+        src: "img/Half Star.png",
+        height: '20px'
+    });
+    for(var i = 0; i < business.rating; i++){
+        if(i+.5 === business.rating){
+            $(rating_info).append(full_star,half_star);
+        }
+        else {
+            $(rating_info).append(full_star);
+        }
+    }
     $(div).append(img,address,address_info,categories,categories_info,rating,rating_info);
     $('.modal-body').empty().append(div);
     $('#myModal').modal('show');

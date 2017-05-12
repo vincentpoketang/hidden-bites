@@ -123,7 +123,9 @@ function initMap() {
             position: new google.maps.LatLng(restaurants[i].coordinates.latitude,restaurants[i].coordinates.longitude),
             map:map,
             mapId: i,
-            label: restaurants[i].name
+            label: {text:restaurants[i].name, css:{
+                background: 'white'
+            }}
         });
         marker.addListener('click',function(){
             var business = restaurants[this.mapId];

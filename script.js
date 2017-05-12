@@ -105,7 +105,7 @@ function ajaxCall(term, search_location) {
         dataType : 'json',
         data : {
             'location' : search_location,
-            'term' : term,
+            'term' : term
         },
         url : 'yelp.php',
         success: function (response){
@@ -137,11 +137,18 @@ function initMap() {
     });
     var markers = [];
     for(var i = 0; i < restaurants.length; i++){
+        var restaurant_name = "";
+        for(var j = 0; j < 12 && j < restaurants[i].name.length; j++){
+            restaurant_name += restaurants[i].name[j];
+        }
+        if(restaurants[i].name.length > 12){
+            restaurant_name += '...';
+        }
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(restaurants[i].coordinates.latitude,restaurants[i].coordinates.longitude),
             map:map,
             mapId: i,
-            label: restaurants[i].name
+            label: restaurant_name
         });
         marker.addListener('click',function(){
             var business = restaurants[this.mapId];
@@ -326,6 +333,7 @@ function positionError(error) {
 /**
  * dummy - dummydata
  */
+
 // function dummy(){
 //     restaurants = [
 //         {
@@ -498,4 +506,3 @@ function positionError(error) {
 //     ];
 //     initMap();
 // }
-

@@ -52,6 +52,12 @@ function clickHandler() {
         $('.beforeSearch').removeClass('animated fadeOutLeftBig');
         $('.beforeSearch').addClass('animated fadeInLeftBig');
 
+        // clear the existing results
+        setTimeout(function(){
+            map = {};
+            $('.map_header').text('Loading...');
+            $('#map').empty();
+        }, 1000);
     });
 }
 

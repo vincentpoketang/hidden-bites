@@ -30,8 +30,13 @@ var user_location = {
 function clickHandler(){
     $('#firstButton').click(function() {
         console.log('clicklick');
-        $('.beforeSearch').addClass('hide');
+        $('.beforeSearch').removeClass('animated fadeInLeftBig');
+        $('.beforeSearch').addClass('animated fadeOutLeftBig');
         ajaxCall();
+    })
+    $('#backToFront').click(function(){
+        $('.beforeSearch').removeClass('animated fadeOutLeftBig');
+        $('.beforeSearch').addClass('animated fadeInLeftBig');
     })
 }
 

@@ -10,6 +10,14 @@ body{
 p{
     font-size: 14px;
 }
+.alert {
+    font-size: 14px;
+    clear: both;
+    max-width: 400px;
+    margin: 20px auto;
+    display: none;
+    transition: opacity 1s ease-out;
+}
 .outside_div{
     height: 100%;
     width: 100%;
@@ -143,7 +151,32 @@ button.close{
     width: 100%;
     height: 100%;
 }
+
+
+.no-results {
+    font-size: 3vmin;
+    padding: 2vh 1vw;
+}
+
+li {
+    font-size: 3vmin;
+}
+
+ul {
+    display: flex;
+    height: 30vmin;
+    margin-top: 2vh;
+    margin-bottom: 10px;
+    flex-flow: column wrap;
+    align-content: stretch;
+}
+
+.no-results-header {
+    font-size: 10vmin;
+}
+
 .modal-div > img {
     max-height: 300px;
     max-width: 100%;
 }
+

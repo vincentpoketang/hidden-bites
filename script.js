@@ -8,7 +8,6 @@
 $(document).ready(function(){
     clickHandler();
     getCurrentLocation();
-
 });
 
 /**
@@ -59,7 +58,6 @@ function clickHandler() {
     $('#backToFront').click(function(){
         $('.beforeSearch').removeClass('animated fadeOutLeftBig');
         $('.beforeSearch').addClass('animated fadeInLeftBig');
-
         // clear the existing results
         setTimeout(function(){
             map = {};
@@ -75,12 +73,9 @@ function searchFunction() {
     search_term = 'hole in the wall ';
     search_term += ($('#input_food').val());
     search_location = $('#input_location').val();
-
     ajaxCall(search_term, search_location);
-
     $('.beforeSearch').removeClass('animated fadeInLeftBig');
     $('.beforeSearch').addClass('animated fadeOutLeftBig');
-
 }
 
 /**
@@ -104,7 +99,9 @@ function ajaxCall(term, search_location) {
         },
         error: function (response){
             console.log('Sorry nothing available');
-            //dummy(); <-- fake data when mamp doesnt work
+            // dummy();
+            // // ^
+            // // L__fake data when mamp doesnt work
         }
     })
 }

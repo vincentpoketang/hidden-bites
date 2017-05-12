@@ -48,6 +48,11 @@ function clickHandler() {
     $('#firstButton').click(function () {
         searchFunction();
     });
+    $('#backToFront').click(function(){
+        $('.beforeSearch').removeClass('animated fadeOutLeftBig');
+        $('.beforeSearch').addClass('animated fadeInLeftBig');
+
+    });
 }
 
 
@@ -63,12 +68,6 @@ function searchFunction() {
     $('.beforeSearch').addClass('animated fadeOutLeftBig');
 
 }
-
-$('#backToFront').click(function(){
-    $('.beforeSearch').removeClass('animated fadeOutLeftBig');
-    $('.beforeSearch').addClass('animated fadeInLeftBig');
-
-});
 
 /**
  * ajaxCall - get json info from php file and if it is success, push info to restaurants,
@@ -87,7 +86,7 @@ function ajaxCall(term, search_location) {
             restaurants = response;
             initMap();
             console.log(restaurants);
-            $('.map_header').text('Check out these ' + restaurants.length + ' spots');
+            $('.map_header').text('Check out these ' + restaurants.length + ' spots near ' + search_location);
         },
         error: function (response){
             console.log('Sorry nothing available');

@@ -67,7 +67,7 @@ function searchFunction() {
     $('.beforeSearch').removeClass('animated fadeInLeftBig');
     $('.beforeSearch').addClass('animated fadeOutLeftBig');
 
-};
+}
 
 /**
  * ajaxCall - get json info from php file and if it is success, push info to restaurants,

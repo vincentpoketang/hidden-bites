@@ -1,9 +1,12 @@
 /**
  * Created by C4.17 Team 4 Hackathon 2 on 5/10/2017.
  */
+/**
+ * load stuff when document start
+ */
 $(document).ready(function(){
     clickHandler();
-    getLocation();
+    getCurrentLocation();
 });
 
 /**
@@ -20,8 +23,8 @@ var search_term = 'hole in the wall ';
  * @type {{lat: number, lng: number}}
  */
 var user_location = {
-    lat: 33.6349187,
-    lng: -117.7404658
+    lat: 33.634910999999995,
+    lng: -117.7404998
 };
 
 var search_location = user_location;
@@ -31,17 +34,27 @@ var search_location = user_location;
 function clickHandler(){
     $('#firstButton').click(function() {
         console.log('clicklick');
+
         search_term += ($('#input_food').val());
         search_location = $('#input_location').val();
-        $('.beforeSearch').addClass('hide');
 
         ajaxCall(search_term, search_location);
+
+        $('.beforeSearch').removeClass('animated fadeInLeftBig');
+        $('.beforeSearch').addClass('animated fadeOutLeftBig');
+
+    });
+    $('#backToFront').click(function(){
+        $('.beforeSearch').removeClass('animated fadeOutLeftBig');
+        $('.beforeSearch').addClass('animated fadeInLeftBig');
     })
 }
+
 /**
  * ajaxCall - get json info from php file and if it is success, push info to restaurants,
  *              else console.log an error
  */
+
 
 function ajaxCall(term, search_location) {
     $.ajax({
@@ -54,8 +67,8 @@ function ajaxCall(term, search_location) {
         url : 'yelp.php',
         success: function (response){
             restaurants = response;
+            initMap();
             console.log(restaurants);
-
         },
         error: function (response){
             console.log('Sorry nothing available')
@@ -64,10 +77,50 @@ function ajaxCall(term, search_location) {
 }
 
 /**
+ * getAddressFromCoords - using Google's Reverse Geocoding API, get
+ * a human-readable address from the user's location coordinates
+ */
+function getAddressFromCoords() {
+    $.ajax({
+        method : 'get',
+        dataType : 'json',
+        url : 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + user_location.lat + ',' + user_location.lng + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
+        success: function (response){
+            $('#input_location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
+        },
+        error: function (response){
+            console.log('Unable to convert user\'s coordinates into address: ', response);
+        }
+    })
+}
+
+// function getLatLngFromKeywords(){
+//     var word = '';
+//     for(var i = 0; i < $('#input_location').val().length; i++){
+//         if($('#input_location').val()[i]===' '){
+//             word += '+';
+//         }
+//         else{
+//             word+=$('#input_location').val()[i];
+//         }
+//     }
+//     $.ajax({
+//         method : 'get',
+//         dataType : 'json',
+//         url : 'https://maps.googleapis.com/maps/api/geocode/json?address=' + word + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
+//         success: function (response){
+//             $('#input_location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
+//         },
+//         error: function (response){
+//             console.log('Unable to convert user\'s coordinates into address: ', response);
+//         }
+//     })
+// }
+/**
  * getLocation - Get the user's current location using the HTML5 geolocation API,
  * and pass it in object form to the savePosition function
  */
-function getLocation() {
+function getCurrentLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(savePosition, positionError);
     } else {
@@ -84,6 +137,7 @@ function savePosition(position) {
         lat: position.coords.latitude,
         lng: position.coords.longitude
     };
+    getAddressFromCoords();
 }
 
 /**
@@ -109,83 +163,6 @@ function positionError(error) {
     }
 }
 
-var static_data = {
-    "total": 8228,
-    "businesses": [
-        {
-            "rating": 4,
-            "price": "$",
-            "phone": "+14152520800",
-            "id": "four-barrel-coffee-san-francisco",
-            "is_closed": false,
-            "categories": [
-                {
-                    "alias": "coffee",
-                    "title": "Coffee & Tea"
-                }
-            ],
-            "review_count": 1738,
-            "name": "Four Barrel Coffee",
-            "url": "https://www.yelp.com/biz/four-barrel-coffee-san-francisco",
-            "coordinates": {
-                "latitude": 37.7670169511878,
-                "longitude": -122.42184275
-            },
-            "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
-            "location": {
-                "city": "San Francisco",
-                "country": "US",
-                "address2": "",
-                "address3": "",
-                "state": "CA",
-                "address1": "375 Valencia St",
-                "zip_code": "94103"
-            },
-            "distance": 1604.23,
-            "transactions": ["pickup", "delivery"]
-        },
-        {
-            "rating": 4,
-            "price": "$",
-            "phone": "+14152520800",
-            "id": "four-barrel-coffee-san-francisco",
-            "is_closed": false,
-            "categories": [
-                {
-                    "alias": "coffee",
-                    "title": "Coffee & Tea"
-                }
-            ],
-            "review_count": 1738,
-            "name": "Painted Ladies",
-            "url": "https://www.yelp.com/biz/four-barrel-coffee-san-francisco",
-            "coordinates": {
-                "latitude": 37.7762593,
-                "longitude": -122.432758
-            },
-            "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
-            "location": {
-                "city": "San Francisco",
-                "country": "US",
-                "address2": "",
-                "address3": "",
-                "state": "CA",
-                "address1": "375 Valencia St",
-                "zip_code": "94103"
-            },
-            "distance": 1604.23,
-            "transactions": ["pickup", "delivery"]
-        }
-        // ...
-    ],
-    "region": {
-        "center": {
-            "latitude": 37.767413217936834,
-            "longitude": -122.42820739746094
-        }
-    }
-};
-
 /**
  * map - global object for map
  * @type {Object}
@@ -197,18 +174,18 @@ var map;
  */
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(static_data.region.center.latitude,static_data.region.center.longitude),
+        center: new google.maps.LatLng(restaurants[0].coordinates.latitude,restaurants[0].coordinates.longitude),
         zoom: 15,
-        mapTypeId: 'roadmap'
+        mapTypeId: 'terrain'
     });
-    for(var i = 0; i < static_data.businesses.length; i++){
+    for(var i = 0; i < restaurants.length; i++){
         var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(static_data.businesses[i].coordinates.latitude,static_data.businesses[i].coordinates.longitude),
+            position: new google.maps.LatLng(restaurants[i].coordinates.latitude,restaurants[i].coordinates.longitude),
             map:map,
             label: ""+(i+1)
         });
         marker.addListener('click',function(){
-            var business = static_data.businesses[this.label-1];
+            var business = restaurants[this.label-1];
             modalEdits(business);
         });
     }

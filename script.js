@@ -54,8 +54,6 @@ function clickHandler(){
  * ajaxCall - get json info from php file and if it is success, push info to restaurants,
  *              else console.log an error
  */
-
-
 function ajaxCall(term, search_location) {
     $.ajax({
         method : 'get',
@@ -71,7 +69,7 @@ function ajaxCall(term, search_location) {
             console.log(restaurants);
         },
         error: function (response){
-            console.log('Sorry nothing available')
+            console.log('Sorry nothing available');
         }
     })
 }
@@ -235,17 +233,17 @@ function modalEdits(business){
     //     rating_stars += '* ';
     // }
     var rating_info = $('<p>');
-    var full_star = $('<img>',{
-        src: "img/Star.png",
-        height: '20px'
-    });
-    var half_star = $('<img>',{
-        src: "img/Half Star.png",
-        height: '20px'
-    });
     for(var i = 0; i < business.rating; i++){
+        var full_star = $('<img>',{
+            src: "img/Star.png",
+            height: '20px'
+        });
         if(i+.5 === business.rating){
-            $(rating_info).append(full_star,half_star);
+            var half_star = $('<img>',{
+                src: "img/Half Star.png",
+                height: '20px'
+            });
+            $(rating_info).append(half_star);
         }
         else {
             $(rating_info).append(full_star);

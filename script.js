@@ -74,8 +74,6 @@ $('#backToFront').click(function(){
  * ajaxCall - get json info from php file and if it is success, push info to restaurants,
  *              else console.log an error
  */
-
-
 function ajaxCall(term, search_location) {
     $.ajax({
         method : 'get',
@@ -91,7 +89,177 @@ function ajaxCall(term, search_location) {
             console.log(restaurants);
         },
         error: function (response){
-            console.log('Sorry nothing available')
+            console.log('Sorry nothing available');
+            // restaurants = [
+            //     {
+            //         "id": "hole-mole-tustin-3",
+            //         "name": "Hole Mole",
+            //         "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/8Fbuh-LdA-9xzC4fyz7MxA/o.jpg",
+            //         "is_closed": false,
+            //         "url": "https://www.yelp.com/biz/hole-mole-tustin-3?adjust_creative=WU6z7FsEd1hqqujqFUQXJw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=WU6z7FsEd1hqqujqFUQXJw",
+            //         "review_count": 681,
+            //         "categories": [
+            //             {
+            //                 "alias": "mexican",
+            //                 "title": "Mexican"
+            //             },
+            //             {
+            //                 "alias": "seafood",
+            //                 "title": "Seafood"
+            //             },
+            //             {
+            //                 "alias": "breakfast_brunch",
+            //                 "title": "Breakfast & Brunch"
+            //             }
+            //         ],
+            //         "rating": 4,
+            //         "coordinates": {
+            //             "latitude": 33.73307910864370029457859345711767673492431640625,
+            //             "longitude": -117.826818639148001466310233809053897857666015625
+            //         },
+            //         "transactions": [],
+            //         "price": "$",
+            //         "location": {
+            //             "address1": "14430 Newport Ave",
+            //             "address2": "",
+            //             "address3": "",
+            //             "city": "Tustin",
+            //             "zip_code": "92780",
+            //             "country": "US",
+            //             "state": "CA",
+            //             "display_address": [
+            //                 "14430 Newport Ave",
+            //                 "Tustin, CA 92780"
+            //             ]
+            //         },
+            //         "phone": "+17145052502",
+            //         "display_phone": "(714) 505-2502",
+            //         "distance": 6803.3665635099996507051400840282440185546875
+            //     },
+            //
+            //     {
+            //         "id": "normitas-surf-city-taco-huntington-beach",
+            //         "name": "Normita's Surf City Taco",
+            //         "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/NkXkivj1-pq_Fb8YfWlB-Q/o.jpg",
+            //         "is_closed": false,
+            //         "url": "https://www.yelp.com/biz/normitas-surf-city-taco-huntington-beach?adjust_creative=WU6z7FsEd1hqqujqFUQXJw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=WU6z7FsEd1hqqujqFUQXJw",
+            //         "review_count": 458,
+            //         "categories": [
+            //             {
+            //                 "alias": "mexican",
+            //                 "title": "Mexican"
+            //             },
+            //             {
+            //                 "alias": "breakfast_brunch",
+            //                 "title": "Breakfast & Brunch"
+            //             }
+            //         ],
+            //         "rating": 4.5,
+            //         "coordinates": {
+            //             "latitude": 33.6649578809738017071140347979962825775146484375,
+            //             "longitude": -117.9893519729379960381265846081078052520751953125
+            //         },
+            //         "transactions": [],
+            //         "price": "$",
+            //         "location": {
+            //             "address1": "815 Indianapolis Ave",
+            //             "address2": "",
+            //             "address3": "",
+            //             "city": "Huntington Beach",
+            //             "zip_code": "92648",
+            //             "country": "US",
+            //             "state": "CA",
+            //             "display_address": [
+            //                 "815 Indianapolis Ave",
+            //                 "Huntington Beach, CA 92648"
+            //             ]
+            //         },
+            //         "phone": "+17149608730",
+            //         "display_phone": "(714) 960-8730",
+            //         "distance": 18214.35240467999756219796836376190185546875
+            //     },
+            //
+            //     {
+            //         "id": "taco-adobe-orange",
+            //         "name": "Taco Adobe",
+            //         "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/dA56yAjejTAJ1AmI3VheqA/o.jpg",
+            //         "is_closed": false,
+            //         "url": "https://www.yelp.com/biz/taco-adobe-orange?adjust_creative=WU6z7FsEd1hqqujqFUQXJw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=WU6z7FsEd1hqqujqFUQXJw",
+            //         "review_count": 526,
+            //         "categories": [
+            //             {
+            //                 "alias": "seafood",
+            //                 "title": "Seafood"
+            //             },
+            //             {
+            //                 "alias": "tacos",
+            //                 "title": "Tacos"
+            //             }
+            //         ],
+            //         "rating": 4,
+            //         "coordinates": {
+            //             "latitude": 33.78837966918950286299150320701301097869873046875,
+            //             "longitude": -117.8549499511720028976924368180334568023681640625
+            //         },
+            //         "transactions": [],
+            //         "price": "$",
+            //         "location": {
+            //             "address1": "121 N Lemon St",
+            //             "address2": "",
+            //             "address3": "",
+            //             "city": "Orange",
+            //             "zip_code": "92866",
+            //             "country": "US",
+            //             "state": "CA",
+            //             "display_address": [
+            //                 "121 N Lemon St",
+            //                 "Orange, CA 92866"
+            //             ]
+            //         },
+            //         "phone": "+17146280633",
+            //         "display_phone": "(714) 628-0633",
+            //         "distance": 13472.013666280001416453160345554351806640625
+            //     },
+            //
+            //     {
+            //         "id": "taco-grill-westminster",
+            //         "name": "Taco Grill",
+            //         "image_url": "https://s3-media1.fl.yelpcdn.com/bphoto/WA7hi1XXKULmLvjohaE6Mg/o.jpg",
+            //         "is_closed": false,
+            //         "url": "https://www.yelp.com/biz/taco-grill-westminster?adjust_creative=WU6z7FsEd1hqqujqFUQXJw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=WU6z7FsEd1hqqujqFUQXJw",
+            //         "review_count": 462,
+            //         "categories": [
+            //             {
+            //                 "alias": "mexican",
+            //                 "title": "Mexican"
+            //             }
+            //         ],
+            //         "rating": 4.5,
+            //         "coordinates": {
+            //             "latitude": 33.72332350699979741648348863236606121063232421875,
+            //             "longitude": -117.9808550700550000556177110411226749420166015625
+            //         },
+            //         "transactions": [],
+            //         "price": "$",
+            //         "location": {
+            //             "address1": "8481 Heil Ave",
+            //             "address2": "",
+            //             "address3": "",
+            //             "city": "Westminster",
+            //             "zip_code": "92683",
+            //             "country": "US",
+            //             "state": "CA",
+            //             "display_address": [
+            //                 "8481 Heil Ave",
+            //                 "Westminster, CA 92683"
+            //             ]
+            //         },
+            //         "phone": "+17148412444",
+            //         "display_phone": "(714) 841-2444",
+            //         "distance": 18044.856715879999683238565921783447265625
+            //     }
+            // ];
+            // initMap();
         }
     })
 }
@@ -113,29 +281,18 @@ function getAddressFromCoords() {
         }
     })
 }
+function findCenterForMap(){
+    var globalTotalLat = 0;
+    var globalTotalLng = 0;
+    for(var i = 0; i < restaurants.length; i++){
+        globalTotalLat += restaurants[i].coordinates.latitude;
+        globalTotalLng += restaurants[i].coordinates.longitude;
+    }
+    globalTotalLat /= restaurants.length;
+    globalTotalLng /= restaurants.length;
+    return [globalTotalLat,globalTotalLng];
+}
 
-// function getLatLngFromKeywords(){
-//     var word = '';
-//     for(var i = 0; i < $('#input_location').val().length; i++){
-//         if($('#input_location').val()[i]===' '){
-//             word += '+';
-//         }
-//         else{
-//             word+=$('#input_location').val()[i];
-//         }
-//     }
-//     $.ajax({
-//         method : 'get',
-//         dataType : 'json',
-//         url : 'https://maps.googleapis.com/maps/api/geocode/json?address=' + word + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
-//         success: function (response){
-//             $('#input_location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
-//         },
-//         error: function (response){
-//             console.log('Unable to convert user\'s coordinates into address: ', response);
-//         }
-//     })
-// }
 /**
  * getLocation - Get the user's current location using the HTML5 geolocation API,
  * and pass it in object form to the savePosition function
@@ -194,8 +351,8 @@ var map;
  */
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(restaurants[0].coordinates.latitude,restaurants[0].coordinates.longitude),
-        zoom: 15,
+        center: new google.maps.LatLng(findCenterForMap()[0],findCenterForMap()[1]),
+        zoom: 13,
         mapTypeId: 'terrain'
     });
     for(var i = 0; i < restaurants.length; i++){
@@ -244,28 +401,29 @@ function modalEdits(business){
     var categories = $('<h4>',{
         text: 'Categories'
     });
+    var categories_listing = business.categories[0].title;
+    for(var i = 1; i < business.categories.length; i++){
+        categories_listing += ", " + business.categories[i].title;
+    }
     var categories_info = $('<p>',{
-        text: business.categories[0].title
+        text: categories_listing
     });
+
     var rating = $('<h4>',{
         text: 'Rating'
     });
-    // var rating_stars = '';
-    // for(var i = 0; i < business.rating; i++){
-    //     rating_stars += '* ';
-    // }
     var rating_info = $('<p>');
-    var full_star = $('<img>',{
-        src: "img/Star.png",
-        height: '20px'
-    });
-    var half_star = $('<img>',{
-        src: "img/Half Star.png",
-        height: '20px'
-    });
     for(var i = 0; i < business.rating; i++){
+        var full_star = $('<img>',{
+            src: "img/Star.png",
+            height: '20px'
+        });
         if(i+.5 === business.rating){
-            $(rating_info).append(full_star,half_star);
+            var half_star = $('<img>',{
+                src: "img/Half Star.png",
+                height: '20px'
+            });
+            $(rating_info).append(half_star);
         }
         else {
             $(rating_info).append(full_star);

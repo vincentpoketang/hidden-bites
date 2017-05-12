@@ -76,12 +76,17 @@ function clickHandler() {
         }, 1000);
     });
 }
+
+
 /**
- * searchFunction - set the search_term and search location to the inputted values, does the ajax call, and switches screen
+ * search function
+ *
  */
+
 function searchFunction() {
     search_term = 'hole in the wall ';
-    search_term += ($('#input_food').val());
+    user_input = $('#input_food').val()
+    search_term += user_input;
     search_location = $('#input_location').val();
     ajaxCall(search_term, search_location);
     $('.beforeSearch').removeClass('animated fadeInLeftBig');
@@ -91,6 +96,8 @@ function searchFunction() {
 /**
  * ajaxCall - get json info from php file and if it is success, push info to restaurants,
  *              else console.log an error
+ * @params term - input of the term the user is searching
+ * @params search_location - the area the user input and/or their current location
  */
 function ajaxCall(term, search_location) {
     $.ajax({
@@ -106,6 +113,9 @@ function ajaxCall(term, search_location) {
             initMap();
             console.log(restaurants);
             $('.map_header').text('Check out these ' + restaurants.length + ' spots near ' + search_location);
+            if(restaurants.length == 0) {
+                noResultsModal();
+            }
         },
         error: function (response){
             console.log('Sorry nothing available');
@@ -210,6 +220,36 @@ function modalEdits(business){
     $('.modal-body').empty().append(div);
     $('#myModal').modal('show');
 }
+
+/**
+ *
+ * @type {[array]} //used to hold a list of common food categories and/or terms that would return results
+ */
+var common_categories = ['Thai', 'Mexican', 'Japanese', 'Sushi', 'Sandwich', 'Chinese', 'Pizza', 'American', 'Burgers', 'Seafood', 'Italian', 'Vietnamese', 'Coffee', 'Latin American', 'Salad', 'Koren', 'BBQ']
+
+/**
+ * function that will pop-up if the search result is zero
+ */
+
+function noResultsModal() {
+    $('.modal-body').empty();
+    var categories_div = $('<div>',{
+        class: 'modal-div no-results'
+    });
+    $('.modal-title').text('Uh-Oh!');
+    $('.modal-title').addClass('no-results-header');
+    $(categories_div).append('Sorry but there are no results for ' + user_input + ' near ' + search_location);
+    $(categories_div).append('<br>' + 'Try one of these common food categories:');
+    var categories_list = $('<ul>');
+    for(i = 0; i < common_categories.length; i++){
+        var food_category_li = $('<li>');
+        $(food_category_li).append(common_categories[i]);
+        $(categories_list).append(food_category_li);
+    }
+    $('.modal-body').append(categories_div, categories_list);
+    $('#myModal').modal('show');
+}
+
 
 /**
  * formatAddress - format the address that is passed and return the formatted address
@@ -459,3 +499,4 @@ function positionError(error) {
 //     ];
 //     initMap();
 // }
+

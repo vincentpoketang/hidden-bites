@@ -33,7 +33,7 @@ function clickHandler(){
         $('.beforeSearch').removeClass('animated fadeInLeftBig');
         $('.beforeSearch').addClass('animated fadeOutLeftBig');
         ajaxCall();
-    })
+    });
     $('#backToFront').click(function(){
         $('.beforeSearch').removeClass('animated fadeOutLeftBig');
         $('.beforeSearch').addClass('animated fadeInLeftBig');

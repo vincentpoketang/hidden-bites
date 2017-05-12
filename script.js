@@ -87,6 +87,7 @@ function ajaxCall(term, search_location) {
             restaurants = response;
             initMap();
             console.log(restaurants);
+            $('.map_header').append('Check out these ' + restaurants.length + ' spots');
         },
         error: function (response){
             console.log('Sorry nothing available');

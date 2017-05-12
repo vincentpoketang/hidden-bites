@@ -1,11 +1,21 @@
+html{
+    height: 100%;
+    width: 100%;
+}
+body{
+    height: 100%;
+    width: 100%;
+    font-size: 0;
+}
 .outside_div{
-    height:80vh;
-    width:90vw;
+    height: 100%;
+    width: 100%;
 }
 .beforeSearch{
     display: inline-block;
     position: absolute;
     z-index: 2;
+    background-color: white;
     background-image: url("img/11.jpg");
     background-size: cover;
     background-repeat: no-repeat;
@@ -15,32 +25,34 @@
     text-align: center;
 }
 #beforeForm{
-    margin:3%
+    margin: 3%
 }
 .front_input{
     width: 90%;
-    max-width:400px;
-    margin: 5px auto ;
+    max-width: 400px;
+    margin: 5px auto;
+}
+#firstButton{
+    padding: 15px 30px;
+}
 
-}
-.firstButton{
-    left: 69%;
-    top: 1em;
-    position: relative;
-    width: 5em;
-}
 #beforeLogo{
-    margin-top: 6%;
+    margin-top: 10vh;
 }
 .logo{
     position: static;
     display:inline-block;
 }
+.intro-text {
+    color: white;
+    font-size: 22px;
+    margin: 25px 0;
+}
 #afterLogo{
     margin: 1%;
 }
 .para{
-    margin:2% 0 2% 0;
+    margin: 2% 0 2% 0;
 }
 .header{
     padding: 3%;
@@ -52,28 +64,20 @@ h3{
 }
 .AfterSearch{
     display: inline-block;
-    position: absolute;
-    height: 95%;
-    width: 99%;
+    position: relative;
+    height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
+    background: url('img/loading.gif') no-repeat center;
 }
-/*.navbar-header{*/
-    /*background-image: url("img/3.jpg");*/
-    /*background-size: cover;*/
-    /*background-repeat: no-repeat;*/
-    /*!*background-position: center;*!*/
-/*}*/
-/*.navbar-header{*/
-    /*height:7%;*/
-/*}*/
 .map_header{
     z-index: 1;
     position: absolute;
 }
 #backToFront{
-    /*top: 90%;*/
-    /*left: 3%;*/
+    top: 10px;
+    left: 10px;
     z-index: 1;
     position: absolute;
     width: 5em;
@@ -87,8 +91,9 @@ h3{
     z-index: 0;
 }
 #map{
-    height:100vh;
-    width:100vw;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
 }
 /* The Modal (background) */
 .modal {
@@ -105,9 +110,23 @@ h3{
 .modal-header, .modal-footer{
     text-align: center;
 }
+.modal-header{
+    background: #e67428;
+    color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+button.close{
+    color: white;
+    opacity: .4;
+}
 .modal-div{
     display: inline-block;
     text-align: center;
     width: 100%;
     height: 100%;
+}
+.map_header {
+    z-index: 1;
+    position: absolute;
 }

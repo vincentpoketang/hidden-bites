@@ -7,6 +7,9 @@ body{
     width: 100%;
     font-size: 0;
 }
+p{
+    font-size: 14px;
+}
 .outside_div{
     height: 100%;
     width: 100%;
@@ -34,14 +37,18 @@ body{
 }
 #firstButton{
     padding: 15px 30px;
+    background: #7faa2c;
+    border-color: #7faa2c;
 }
-
 #beforeLogo{
     margin-top: 10vh;
 }
 .logo{
     position: static;
-    display:inline-block;
+    display: inline-block;
+    width: 90%;
+    max-width: 330px;
+    height: auto;
 }
 .intro-text {
     color: white;
@@ -59,8 +66,7 @@ body{
     text-align: center;
 }
 h3{
-    margin: 0 0 0 40%;
-    font-size: 4vmin;;
+    text-align: center;
 }
 .AfterSearch{
     display: inline-block;
@@ -71,17 +77,26 @@ h3{
     padding: 0;
     background: url('img/loading.gif') no-repeat center;
 }
-.map_header{
+#map_header{
     z-index: 1;
     position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 10vh;
+    color: white;
+    background: #aad14a;
 }
 #backToFront{
     top: 10px;
     left: 10px;
     z-index: 1;
     position: absolute;
-    width: 5em;
-    height: 3em;
+    font-size: 20px;
+    background: transparent;
+    border: 1px solid white;
+    padding: 14px;
+    border-radius: 50%;
 }
 .back_input{
      width: 40%;
@@ -126,7 +141,7 @@ button.close{
     width: 100%;
     height: 100%;
 }
-.map_header {
-    z-index: 1;
-    position: absolute;
+.modal-div img {
+    max-height: 300px;
+    max-width: 100%;
 }

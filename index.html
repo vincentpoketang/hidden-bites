@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hole-in-the-Wall Restaurant Finder</title>
+    <title>The Hole - Hole in the Wall Restaurant Finder</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -17,7 +17,7 @@
     <!-- initial screen that takes the user input -->
     <div class="beforeSearch">
         <div class="logo" id="beforeLogo">
-            <img src="img/the-hole.png" />
+            <img src="img/the-hole.png" height="136" width="330" />
         </div>
         <p class="intro-text">Tired of your regular chain?<br/>
         Time to find your own hole in the wall!</p>
@@ -28,13 +28,15 @@
             <div class="form-group col-xs-12">
                <input class="form-control input-lg front_input " id="input_location" type="text" name="address" placeholder="Location I'm going...">
             </div>
-            <button id='firstButton' class="btn btn-success btn-lg" type="button">Search</button>
+            <button id="firstButton" class="btn btn-success btn-lg" type="button">Search</button>
         </form>
     </div>
     <!-- result/map area - show this with .hide when the button is clicked -->
     <div class="AfterSearch">
-        <button id="backToFront" class=" btn-danger btn-lg glyphicon glyphicon-arrow-left"></button>
-        <h3 class="map_header">Hole in the Wall</h3>
+        <div id="map_header">
+            <button id="backToFront" class="glyphicon glyphicon-chevron-left"></button>
+            <h3 class="map_header">Hole in the Wall</h3>
+        </div>
         <div id="map">
         </div>
     </div>

@@ -364,11 +364,11 @@ function initMap() {
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(restaurants[i].coordinates.latitude,restaurants[i].coordinates.longitude),
             map:map,
-            name: i+1,
+            mapId: i,
             label: restaurants[i].name
         });
         marker.addListener('click',function(){
-            var business = restaurants[this.name-1];
+            var business = restaurants[this.mapId];
             modalEdits(business);
         });
     }

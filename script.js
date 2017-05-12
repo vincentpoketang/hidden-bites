@@ -130,6 +130,7 @@ function initMap() {
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(restaurants[i].coordinates.latitude,restaurants[i].coordinates.longitude),
             map:map,
+            icon: 'img/label-bg.png',
             mapId: i,
             label: restaurants[i].name
         });

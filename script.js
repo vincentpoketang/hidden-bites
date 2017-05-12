@@ -261,7 +261,17 @@ function getAddressFromCoords() {
         }
     })
 }
-
+function findCenterForMap(){
+    var globalTotalLat = 0;
+    var globalTotalLng = 0;
+    for(var i = 0; i < restaurants.length; i++){
+        globalTotalLat += restaurants[i].coordinates.latitude;
+        globalTotalLng += restaurants[i].coordinates.longitude;
+    }
+    globalTotalLat /= restaurants.length;
+    globalTotalLng /= restaurants.length;
+    return [globalTotalLat,globalTotalLng];
+}
 
 /**
  * getLocation - Get the user's current location using the HTML5 geolocation API,
@@ -321,7 +331,7 @@ var map;
  */
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(restaurants[0].coordinates.latitude,restaurants[0].coordinates.longitude),
+        center: new google.maps.LatLng(findCenterForMap()[0],findCenterForMap()[1]),
         zoom: 13,
         mapTypeId: 'terrain'
     });

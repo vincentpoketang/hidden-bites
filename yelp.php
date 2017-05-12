@@ -128,18 +128,6 @@ function search($bearer_token, $term, $location) {
     return request($bearer_token, $GLOBALS['API_HOST'], $GLOBALS['SEARCH_PATH'], $url_params);
 }
 /**
- * Query the Business API by business_id
- *
- * @param    $bearer_token   API bearer token from obtain_bearer_token
- * @param    $business_id    The ID of the business to query
- * @return   The JSON response from the request
- */
-//function get_business($bearer_token, $business_id) {
-//    $business_path = $GLOBALS['BUSINESS_PATH'] . urlencode($business_id);
-//
-//    return request($bearer_token, $GLOBALS['API_HOST'], $business_path);
-//}
-/**
  * Queries the API by the input values from the user
  *
  * @param    $term        The search term to query
@@ -150,34 +138,12 @@ function query_api($term, $location) {
     $response = json_decode(search($bearer_token, $term, $location));
         $pretty_response = json_encode($response->businesses, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         print_r($pretty_response);
-
-    //$business_id = $response->businesses[0]->id;
-//    print sprintf(
-//        "%d businesses found, querying business info for the top result \"%s\"\n\n",
-//        count($response->businesses),
-//        $business_id
-//    );
-
-    //$response = get_business($bearer_token, $business_id);
-
-   //print sprintf("Result for business \"%s\" found:\n", $business_id);
-    //$pretty_response = json_encode(json_decode($response), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-    //print "$pretty_response\n";
 }
 
 /**
  * User input is handled here
  */
-$longopts  = array(
-    "term::",
-    "location::",
-);
 
-//$term = $_GET['term'];
-//$location = $_GET['location'];
-
-
-//$options = getopt("", $longopts);
 $term = $_GET['term'] ?: $GLOBALS['DEFAULT_TERM'];
 $location = $_GET['location'] ?: $GLOBALS['DEFAULT_LOCATION'];
 query_api($term, $location);

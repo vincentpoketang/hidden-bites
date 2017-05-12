@@ -228,10 +228,6 @@ function modalEdits(business){
     var rating = $('<h4>',{
         text: 'Rating'
     });
-    // var rating_stars = '';
-    // for(var i = 0; i < business.rating; i++){
-    //     rating_stars += '* ';
-    // }
     var rating_info = $('<p>');
     for(var i = 0; i < business.rating; i++){
         var full_star = $('<img>',{

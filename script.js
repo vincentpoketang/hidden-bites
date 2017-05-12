@@ -30,7 +30,7 @@ var restaurants = [];
 var search_term = 'hole in the wall ';
 
 /**
- * as an absolute worst-case scenario we default the user location to the LF HQ
+ * user_location - global variable that, as an absolute worst-case scenario, default the user location to the LF HQ
  * @type {{lat: number, lng: number}}
  */
 var user_location = {
@@ -39,7 +39,7 @@ var user_location = {
 };
 
 /**
- * search_location -
+ * search_location - global variable that stores location that is searched
  */
 var search_location = user_location;
 
@@ -69,7 +69,7 @@ function clickHandler() {
     });
 }
 /**
- * searchFunction - \
+ * searchFunction - set the search_term and search location to the inputted values, does the ajax call, and switches screen
  */
 function searchFunction() {
     search_term = 'hole in the wall ';
@@ -240,8 +240,7 @@ function savePosition(position) {
 }
 
 /**
- * getAddressFromCoords - using Google's Reverse Geocoding API, get
- * a human-readable address from the user's location coordinates
+ * getAddressFromCoords - using Google's Reverse Geocoding API, get a human-readable address from the user's location coordinates
  */
 function getAddressFromCoords() {
     $.ajax({

@@ -11,6 +11,9 @@ $(document).ready(function(){
  * @type {Array}
  */
 var restaurants = [];
+var search_term = 'hole in the wall ';
+
+
 
 /**
  * as an absolute worst-case scenario we default the user location to the LF HQ
@@ -21,45 +24,38 @@ var user_location = {
     lng: -117.7404658
 };
 
+var search_location = user_location;
 /**
  * clickHandler - Event Handler when user clicks the search button
  */
 function clickHandler(){
     $('#firstButton').click(function() {
         console.log('clicklick');
+        search_term += ($('#input_food').val());
+        search_location = $('#input_location').val();
         $('.beforeSearch').addClass('hide');
-        ajaxCall();
+
+        ajaxCall(search_term, search_location);
     })
 }
 /**
- * ajaxCall - get json info from static.php and if it is success, push info to restaurants,
+ * ajaxCall - get json info from php file and if it is success, push info to restaurants,
  *              else console.log an error
  */
 
-// function ajaxPost(){
-//     $.post('static.php'),
-//         {
-//             $location : 'Irvine, CA',
-//             $term : 'dinner'
-//         },
-//         function (data, status) {
-//           console.log(data);
-//         }
-// }
-
-function ajaxCall() {
+function ajaxCall(term, search_location) {
     $.ajax({
         method : 'get',
         dataType : 'json',
         data : {
-            'location' : 'San Francisco, CA',
-            'term' : 'dinner',
-            //'price' :
+            'location' : search_location,
+            'term' : term,
         },
-        url : 'static.php',
+        url : 'yelp.php',
         success: function (response){
-        restaurants.push(response);
-        console.log(restaurants);
+            restaurants = response;
+            console.log(restaurants);
+
         },
         error: function (response){
             console.log('Sorry nothing available')

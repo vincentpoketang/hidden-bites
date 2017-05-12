@@ -30,8 +30,13 @@ var user_location = {
 function clickHandler(){
     $('#firstButton').click(function() {
         console.log('clicklick');
-        $('.beforeSearch').addClass('hide');
+        $('.beforeSearch').removeClass('animated fadeInLeftBig');
+        $('.beforeSearch').addClass('animated fadeOutLeftBig');
         ajaxCall();
+    });
+    $('#backToFront').click(function(){
+        $('.beforeSearch').removeClass('animated fadeOutLeftBig');
+        $('.beforeSearch').addClass('animated fadeInLeftBig');
     })
 }
 
@@ -70,7 +75,7 @@ function getAddressFromCoords() {
         dataType : 'json',
         url : 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + user_location.lat + ',' + user_location.lng + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
         success: function (response){
-            $('#input_food').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
+            $('#input_location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
         },
         error: function (response){
             console.log('Unable to convert user\'s coordinates into address: ', response);
@@ -78,6 +83,28 @@ function getAddressFromCoords() {
     })
 }
 
+// function getLatLngFromKeywords(){
+//     var word = '';
+//     for(var i = 0; i < $('#input_location').val().length; i++){
+//         if($('#input_location').val()[i]===' '){
+//             word += '+';
+//         }
+//         else{
+//             word+=$('#input_location').val()[i];
+//         }
+//     }
+//     $.ajax({
+//         method : 'get',
+//         dataType : 'json',
+//         url : 'https://maps.googleapis.com/maps/api/geocode/json?address=' + word + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
+//         success: function (response){
+//             $('#input_location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
+//         },
+//         error: function (response){
+//             console.log('Unable to convert user\'s coordinates into address: ', response);
+//         }
+//     })
+// }
 /**
  * getLocation - Get the user's current location using the HTML5 geolocation API,
  * and pass it in object form to the savePosition function
@@ -136,7 +163,7 @@ var map;
  */
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(user_location.lat,user_location.lng),
+        center: new google.maps.LatLng(restaurants[0].coordinates.latitude,restaurants[0].coordinates.longitude),
         zoom: 15,
         mapTypeId: 'terrain'
     });

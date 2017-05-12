@@ -34,6 +34,7 @@ var search_location = user_location;
 function clickHandler(){
     $('#firstButton').click(function() {
         console.log('clicklick');
+        search_term = 'hole in the wall ';
         search_term += ($('#input_food').val());
         search_location = $('#input_location').val();
 
@@ -68,7 +69,6 @@ function ajaxCall(term, search_location) {
         url : 'yelp.php',
         success: function (response){
             restaurants = response;
-
             initMap();
             console.log(restaurants);
         },
@@ -88,7 +88,7 @@ function getAddressFromCoords() {
         dataType : 'json',
         url : 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + user_location.lat + ',' + user_location.lng + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
         success: function (response){
-            $('#input_food').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
+            $('#input_location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
         },
         error: function (response){
             console.log('Unable to convert user\'s coordinates into address: ', response);
@@ -96,6 +96,28 @@ function getAddressFromCoords() {
     })
 }
 
+// function getLatLngFromKeywords(){
+//     var word = '';
+//     for(var i = 0; i < $('#input_location').val().length; i++){
+//         if($('#input_location').val()[i]===' '){
+//             word += '+';
+//         }
+//         else{
+//             word+=$('#input_location').val()[i];
+//         }
+//     }
+//     $.ajax({
+//         method : 'get',
+//         dataType : 'json',
+//         url : 'https://maps.googleapis.com/maps/api/geocode/json?address=' + word + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
+//         success: function (response){
+//             $('#input_location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
+//         },
+//         error: function (response){
+//             console.log('Unable to convert user\'s coordinates into address: ', response);
+//         }
+//     })
+// }
 /**
  * getLocation - Get the user's current location using the HTML5 geolocation API,
  * and pass it in object form to the savePosition function
@@ -154,7 +176,7 @@ var map;
  */
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(user_location.lat,user_location.lng),
+        center: new google.maps.LatLng(restaurants[0].coordinates.latitude,restaurants[0].coordinates.longitude),
         zoom: 15,
         mapTypeId: 'terrain'
     });
@@ -210,13 +232,27 @@ function modalEdits(business){
     var rating = $('<h4>',{
         text: 'Rating'
     });
-    var rating_stars = '';
-    for(var i = 0; i < business.rating; i++){
-        rating_stars += '* ';
-    }
-    var rating_info = $('<h4>',{
-        text: rating_stars
+    // var rating_stars = '';
+    // for(var i = 0; i < business.rating; i++){
+    //     rating_stars += '* ';
+    // }
+    var rating_info = $('<p>');
+    var full_star = $('<img>',{
+        src: "img/Star.png",
+        height: '20px'
     });
+    var half_star = $('<img>',{
+        src: "img/Half Star.png",
+        height: '20px'
+    });
+    for(var i = 0; i < business.rating; i++){
+        if(i+.5 === business.rating){
+            $(rating_info).append(full_star,half_star);
+        }
+        else {
+            $(rating_info).append(full_star);
+        }
+    }
     $(div).append(img,address,address_info,categories,categories_info,rating,rating_info);
     $('.modal-body').empty().append(div);
     $('#myModal').modal('show');

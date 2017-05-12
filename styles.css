@@ -6,6 +6,7 @@
     display: inline-block;
     position: absolute;
     z-index: 2;
+    background-color: white;
     background-image: url("img/11.jpg");
     background-size: cover;
     background-repeat: no-repeat;
@@ -19,22 +20,24 @@
 }
 .front_input{
     width: 90%;
-    max-width:400px;
-    margin: 5px auto ;
+    max-width: 400px;
+    margin: 5px auto;
+}
+#firstButton{
+    padding: 15px 30px;
+}
 
-}
-.firstButton{
-    left: 69%;
-    top: 1em;
-    position: relative;
-    width: 5em;
-}
 #beforeLogo{
-    margin-top: 6%;
+    margin-top: 10vh;
 }
 .logo{
     position: static;
     display:inline-block;
+}
+.intro-text {
+    color: white;
+    font-size: 1.5em;
+    margin: 25px 0;
 }
 #afterLogo{
     margin: 1%;

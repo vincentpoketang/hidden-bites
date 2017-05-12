@@ -55,6 +55,10 @@ function clickHandler() {
     });
 }
 
+/**
+ * search function
+ *
+ */
 
 function searchFunction() {
     console.log('clicklick');
@@ -73,6 +77,8 @@ function searchFunction() {
 /**
  * ajaxCall - get json info from php file and if it is success, push info to restaurants,
  *              else console.log an error
+ * @params term - input of the term the user is searching
+ * @params search_location - the area the user input and/or their current location
  */
 function ajaxCall(term, search_location) {
     $.ajax({
@@ -443,8 +449,15 @@ function modalEdits(business){
     $('.modal-body').empty().append(div);
     $('#myModal').modal('show');
 }
-
+/**
+ *
+ * @type {[array]} //used to hold a list of common food categories and/or terms that would return results
+ */
 var common_categories = ['Thai', 'Mexican', 'Japanese', 'Sushi', 'Sandwich', 'Chinese', 'Pizza', 'American', 'Burgers', 'Seafood', 'Italian', 'Vietnamese', 'Coffee', 'Latin American', 'Salad', 'Koren', 'BBQ']
+
+/**
+ * function that will pop-up if the search result is zero
+ */
 
 function noResultsModal() {
     $('.modal-body').empty();

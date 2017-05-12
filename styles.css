@@ -10,6 +10,14 @@ body{
 p{
     font-size: 14px;
 }
+.alert {
+    font-size: 14px;
+    clear: both;
+    max-width: 400px;
+    margin: 20px auto;
+    display: none;
+    transition: opacity 1s ease-out;
+}
 .outside_div{
     height: 100%;
     width: 100%;

@@ -53,7 +53,17 @@ var map;
  */
 function clickHandler() {
     $('#firstButton').click(function () {
-        searchFunction();
+        if ($('#input_location').val() === '') {
+            $('#alert-location').css('display','block');
+            $('#alert-location').addClass('animated bounceIn');
+            setTimeout(function(){
+                $('#alert-location').removeClass('animated bounceIn');
+            }, 500)
+        } else {
+            $('#alert-location').removeClass('animated bounceIn');
+            $('#alert-location').css('display','none');
+            searchFunction();
+        }
     });
     $('#backToFront').click(function(){
         $('.beforeSearch').removeClass('animated fadeOutLeftBig');
@@ -156,10 +166,7 @@ function modalEdits(business){
         class: 'modal-div'
     });
     var img = $('<img>',{
-        src: business.image_url,
-        css: {
-            height: '300px'
-        }
+        src: business.image_url
     });
     var address = $('<h4>',{
         text: 'Address'

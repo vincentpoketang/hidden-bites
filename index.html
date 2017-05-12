@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hole-in-the-Wall Restaurant Finder</title>
+    <title>The Hole - Hole in the Wall Restaurant Finder</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -13,11 +13,10 @@
 </head>
 <body>
 <div class="outside_div" id="mySidenav">
-
     <!-- initial screen that takes the user input -->
     <div class="beforeSearch">
         <div class="logo" id="beforeLogo">
-            <img src="img/the-hole.png" />
+            <img src="img/the-hole.png" height="136" width="330" />
         </div>
         <p class="intro-text">Tired of your regular chain?<br/>
         Time to find your own hole in the wall!</p>
@@ -28,15 +27,18 @@
             <div class="form-group col-xs-12">
                <input class="form-control input-lg front_input " id="input_location" type="text" name="address" placeholder="Location I'm going...">
             </div>
+            <div id="alert-location" class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                <strong>Oops!</strong> Make sure you enter a location.
+            </div>
             <button id="firstButton" class="btn btn-success btn-lg" type="button">Search</button>
         </form>
     </div>
-
     <!-- result/map area - show this with .hide when the button is clicked -->
     <div class="AfterSearch">
         <div id="map_header">
             <button id="backToFront" class="glyphicon glyphicon-chevron-left"></button>
-            <h3 class="map_header">Hole in the Wall</h3>
+            <h3 class="map_header">Loading...</h3>
         </div>
         <div id="map">
         </div>
@@ -45,7 +47,6 @@
     <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -59,7 +60,6 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
-
         </div>
     </div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto"

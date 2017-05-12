@@ -10,6 +10,14 @@ body{
 p{
     font-size: 14px;
 }
+.alert {
+    font-size: 14px;
+    clear: both;
+    max-width: 400px;
+    margin: 20px auto;
+    display: none;
+    transition: opacity 1s ease-out;
+}
 .outside_div{
     height: 100%;
     width: 100%;
@@ -46,6 +54,9 @@ p{
 .logo{
     position: static;
     display: inline-block;
+    width: 90%;
+    max-width: 330px;
+    height: auto;
 }
 .intro-text {
     color: white;
@@ -63,7 +74,6 @@ p{
     text-align: center;
 }
 h3{
-    font-size: 4vmin;
     text-align: center;
 }
 .AfterSearch{
@@ -81,18 +91,20 @@ h3{
     left: 0;
     top: 0;
     width: 100%;
-    height: 10vh;
     color: white;
     background: #aad14a;
 }
+#map_header h3 {
+    margin: 20px 0;
+    padding: 0 60px;
+}
 #backToFront{
-    top: 10px;
-    left: 10px;
-    z-index: 1;
     position: absolute;
-    font-size: 20px;
+    margin: 9px;
+    z-index: 1;
+    font-size: 16px;
     background: transparent;
-    border: 1px solid white;
+    border: 2px solid white;
     padding: 14px;
     border-radius: 50%;
 }
@@ -140,6 +152,7 @@ button.close{
     height: 100%;
 }
 
+
 .no-results {
     font-size: 3vmin;
     padding: 2vh 1vw;
@@ -161,3 +174,9 @@ ul {
 .no-results-header {
     font-size: 10vmin;
 }
+
+.modal-div > img {
+    max-height: 300px;
+    max-width: 100%;
+}
+

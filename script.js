@@ -62,7 +62,7 @@ function searchFunction() {
     $('.beforeSearch').removeClass('animated fadeInLeftBig');
     $('.beforeSearch').addClass('animated fadeOutLeftBig');
 
-};
+}
 
 $('#backToFront').click(function(){
     $('.beforeSearch').removeClass('animated fadeOutLeftBig');

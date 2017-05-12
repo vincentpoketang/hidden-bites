@@ -59,7 +59,8 @@ function clickHandler() {
 function searchFunction() {
     console.log('clicklick');
     search_term = 'hole in the wall ';
-    search_term += ($('#input_food').val());
+    user_input = $('#input_food').val()
+    search_term += user_input;
     search_location = $('#input_location').val();
 
     ajaxCall(search_term, search_location);
@@ -87,6 +88,9 @@ function ajaxCall(term, search_location) {
             initMap();
             console.log(restaurants);
             $('.map_header').text('Check out these ' + restaurants.length + ' spots near ' + search_location);
+            if(restaurants.length == 0) {
+                noResultsModal();
+            }
         },
         error: function (response){
             console.log('Sorry nothing available');
@@ -437,5 +441,26 @@ function modalEdits(business){
     }
     $(div).append(img,address,address_info,categories,categories_info,rating,rating_info);
     $('.modal-body').empty().append(div);
+    $('#myModal').modal('show');
+}
+
+var common_categories = ['Thai', 'Mexican', 'Japanese', 'Sushi', 'Sandwich', 'Chinese', 'Pizza', 'American', 'Burgers', 'Seafood', 'Italian', 'Vietnamese', 'Coffee', 'Latin American', 'Salad', 'Koren', 'BBQ']
+
+function noResultsModal() {
+    $('.modal-body').empty();
+    var categories_div = $('<div>',{
+        class: 'modal-div no-results'
+    });
+    $('.modal-title').text('Uh-Oh!');
+    $('.modal-title').addClass('no-results-header');
+    $(categories_div).append('Sorry but there are no results for ' + user_input + ' near ' + search_location);
+    $(categories_div).append('<br>' + 'Try one of these common food categories:');
+    var categories_list = $('<ul>');
+    for(i = 0; i < common_categories.length; i++){
+        var food_category_li = $('<li>');
+        $(food_category_li).append(common_categories[i]);
+        $(categories_list).append(food_category_li);
+    }
+    $('.modal-body').append(categories_div, categories_list);
     $('#myModal').modal('show');
 }

@@ -52,7 +52,7 @@ var map;
  *
  * @type {[array]} //used to hold a list of common food categories and/or terms that would return results
  */
-var common_categories = ['Thai', 'Mexican', 'Japanese', 'Sushi', 'Sandwich', 'Chinese', 'Pizza', 'American', 'Burgers', 'Seafood', 'Italian', 'Vietnamese', 'Coffee', 'Latin American', 'Salad', 'Koren', 'BBQ']
+var common_categories = ['Thai', 'Mexican', 'Japanese', 'Sushi', 'Sandwich', 'Chinese', 'Pizza', 'American', 'Burgers', 'Seafood', 'Italian', 'Vietnamese', 'Coffee', 'Latin American', 'Salad', 'Koren', 'BBQ'];
 
 /**
  * clickHandler - Event Handler when user clicks the search button
@@ -64,7 +64,7 @@ function clickHandler() {
             $('#alert-location').addClass('animated bounceIn');
             setTimeout(function(){
                 $('#alert-location').removeClass('animated bounceIn');
-            }, 500)
+            }, 500);
         } else {
             $('#alert-location').removeClass('animated bounceIn');
             $('#alert-location').css('display','none');
@@ -117,17 +117,17 @@ function ajaxCall(term, search_location) {
             initMap();
             console.log(restaurants);
             $('.map_header').text('Check out these ' + restaurants.length + ' spots near ' + search_location);
-            if(restaurants.length == 0) {
+            if(restaurants.length === 0) {
                 noResultsModal();
             }
         },
         error: function (response){
-            console.log('Sorry nothing available');
+            console.log(response);
             // dummy();
             // // ^
             // // L__fake data when mamp doesnt work
         }
-    })
+    });
 }
 
 /**
@@ -159,9 +159,8 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(findCenterForMap()[0],findCenterForMap()[1]),
         zoom: 13,
-        mapTypeId: 'terrain'
+        mapTypeId: 'roadmap'
     });
-    var markers = [];
     for(var i = 0; i < restaurants.length; i++){
         var restaurant_name = "";
         for(var j = 0; j < 12 && j < restaurants[i].name.length; j++){
@@ -206,6 +205,7 @@ function findCenterForMap(){
  */
 function modalEdits(business){
     $('.modal-title').text(business.name);
+    $('.modal-title').removeClass('no-results-header');
     var div = $('<div>',{
         class: 'modal-div'
     });
@@ -238,7 +238,7 @@ function modalEdits(business){
             src: "img/Star.png",
             height: '20px'
         });
-        if(i+.5 === business.rating){
+        if(i+0.5 === business.rating){
             var half_star = $('<img>',{
                 src: "img/Half Star.png",
                 height: '20px'
@@ -301,7 +301,7 @@ function getAddressFromCoords() {
         error: function (response){
             console.log('Unable to convert user\'s coordinates into address: ', response);
         }
-    })
+    });
 }
 
 /**

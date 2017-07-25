@@ -1,5 +1,7 @@
 <?php
-require ('credentials.php');
+
+require_once ('credentials.php');
+
 // API constants, you shouldn't have to change these.
 $API_HOST = "https://api.yelp.com";
 $SEARCH_PATH = "/v3/businesses/search";

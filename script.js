@@ -135,9 +135,6 @@ function ajaxCall(term, search_location) {
     },
     error: function (response) {
       console.log(response);
-      // dummy();
-      // // ^
-      // // L__fake data when mamp doesnt work
     }
   });
 }
@@ -171,7 +168,8 @@ function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: new google.maps.LatLng(findCenterForMap()[0], findCenterForMap()[1]),
     zoom: 13,
-    mapTypeId: 'roadmap'
+    mapTypeId: 'roadmap',
+    styles: googleMapRetro
   });
 
   for (var i = 0; i < restaurants.length; i++) {

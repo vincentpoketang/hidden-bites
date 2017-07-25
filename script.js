@@ -162,18 +162,30 @@ function noResultsModal() {
  * initMap - initialize map object and setting up markers
  */
 function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: new google.maps.LatLng(findCenterForMap()[0], findCenterForMap()[1]),
-    zoom: 13,
-    mapTypeId: 'terrain'
-  });
-  for (var i = 0; i < restaurants.length; i++) {
-    var restaurant_name = "";
-    for (var j = 0; j < 12 && j < restaurants[i].name.length; j++) {
-      restaurant_name += restaurants[i].name[j];
-    }
-    if (restaurants[i].name.length > 12) {
-      restaurant_name += '...';
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: new google.maps.LatLng(findCenterForMap()[0],findCenterForMap()[1]),
+        zoom: 13,
+        mapTypeId: 'roadmap'
+    });
+    for(var i = 0; i < restaurants.length; i++){
+        var restaurant_name = "";
+        for(var j = 0; j < 12 && j < restaurants[i].name.length; j++){
+            restaurant_name += restaurants[i].name[j];
+        }
+        if(restaurants[i].name.length > 12){
+            restaurant_name += '...';
+        }
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(restaurants[i].coordinates.latitude,restaurants[i].coordinates.longitude),
+            map:map,
+            icon: 'img/label-bg.png',
+            mapId: i,
+            label: restaurant_name
+        });
+        marker.addListener('click',function(){
+            var business = restaurants[this.mapId];
+            modalEdits(business);
+        });
     }
     var marker = new google.maps.Marker({
       position: new google.maps.LatLng(restaurants[i].coordinates.latitude, restaurants[i].coordinates.longitude),

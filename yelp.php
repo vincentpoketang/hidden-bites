@@ -1,12 +1,7 @@
 <?php
 
-error_reporting(0);
-
 require_once ('credentials.php');
 
-// Complain if credentials haven't been filled out.
-assert($CLIENT_ID, "Please supply your client_id.");
-assert($CLIENT_SECRET, "Please supply your client_secret.");
 // API constants, you shouldn't have to change these.
 $API_HOST = "https://api.yelp.com";
 $SEARCH_PATH = "/v3/businesses/search";
@@ -121,7 +116,6 @@ function search($bearer_token, $term, $location) {
 
     $url_params['term'] = $term;
     $url_params['location'] = $location;
-    $url_params['limit'] = $GLOBALS['SEARCH_LIMIT'];
     $url_params['radius'] = $GLOBALS['RADIUS'];
     $url_params['price'] = $GLOBALS['PRICE'];
 

@@ -159,7 +159,7 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(findCenterForMap()[0],findCenterForMap()[1]),
         zoom: 13,
-        mapTypeId: 'terrain'
+        mapTypeId: 'roadmap'
     });
     for(var i = 0; i < restaurants.length; i++){
         var restaurant_name = "";

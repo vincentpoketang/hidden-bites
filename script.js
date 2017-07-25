@@ -11,10 +11,9 @@ $(document).ready(function () {
 });
 
 /**
- * wait for shift key to get pressed
+ * wait for enter key to get pressed
  * @
  */
-
 $(document).keypress(function (e) {
   if (e.which == 13) {
     searchFunction();
@@ -22,7 +21,7 @@ $(document).keypress(function (e) {
 });
 
 /**
- * restaurants - global array to hold restaurantsh
+ * restaurants - global array to hold restaurants
  * @type {Array}
  */
 var restaurants = [];
@@ -59,8 +58,8 @@ var common_categories = ['Thai', 'Mexican', 'Japanese', 'Sushi', 'Sandwich', 'Ch
  */
 function clickHandler() {
   var $alert = $('#alert-location');
-  $('#firstButton').click(function () {
-    if ($('#input_location').val() === '') {
+  $('#button-search').click(function () {
+    if ($('#input-location').val() === '') {
       $alert
         .css('display', 'block')
         .addClass('animated bounceIn');
@@ -74,15 +73,15 @@ function clickHandler() {
       searchFunction();
     }
   });
-  $('#backToFront').click(function () {
-    $('.beforeSearch')
+  $('#back-to-front').click(function () {
+    $('.search-container')
       .removeClass('animated fadeOutLeftBig')
       .addClass('animated fadeInLeftBig');
 
     // clear the existing results
     setTimeout(function () {
       map = {};
-      $('.map_header').text('Loading...');
+      $('.map-header').text('Loading...');
       $('#map').empty();
     }, 1000);
   });
@@ -94,11 +93,11 @@ function clickHandler() {
  */
 function searchFunction() {
   search_term = 'hole in the wall ';
-  user_input = $('#input_food').val();
+  user_input = $('#input-food').val();
   search_term += user_input;
-  search_location = $('#input_location').val();
+  search_location = $('#input-location').val();
   ajaxCall(search_term, search_location);
-  $('.beforeSearch')
+  $('.search-container')
     .removeClass('animated fadeInLeftBig')
     .addClass('animated fadeOutLeftBig');
 }
@@ -125,14 +124,12 @@ function ajaxCall(term, search_location) {
       // if that's the case, we need to remove those places from the results array
       for (var i = 0; i < restaurants.length; i++) {
         if (!restaurants[i].coordinates.latitude || !restaurants[i].coordinates.longitude){
-          console.log('we encountered a restaurant without coords:', restaurants[i]);
           restaurants.splice(i, 1);
         }
       }
 
       initMap();
-      console.log(restaurants);
-      $('.map_header').text('Check out these ' + restaurants.length + ' spots near ' + search_location);
+      $('.map-title').text('Check out these ' + restaurants.length + ' spots near ' + search_location);
       if (restaurants.length === 0) {
         noResultsModal();
       }
@@ -153,7 +150,7 @@ function noResultsModal() {
   });
   $('.modal-title').text('Uh-Oh!');
   $('.modal-title').addClass('no-results-header');
-  $(categories_div).append('Sorry but there are no results for ' + user_input + ' near ' + search_location);
+  $(categories_div).append('Sorry but there are no results for ' + user_input + ' near ' + search_location + '.');
   $(categories_div).append('<br>' + 'Try one of these common food categories:');
   var categories_list = $('<ul>');
   for (i = 0; i < common_categories.length; i++) {
@@ -162,7 +159,7 @@ function noResultsModal() {
     $(categories_list).append(food_category_li);
   }
   $('.modal-body').append(categories_div, categories_list);
-  $('#myModal').modal('show');
+  $('#restaurant-modal').modal('show');
 }
 
 /**
@@ -276,7 +273,7 @@ function modalEdits(business) {
 
   $(div).append(img, address, address_info, categories, categories_info, rating, rating_info, website_url);
   $('.modal-body').empty().append(div);
-  $('#myModal').modal('show');
+  $('#restaurant-modal').modal('show');
 }
 
 /**
@@ -321,7 +318,7 @@ function getAddressFromCoords() {
     dataType: 'json',
     url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + user_location.lat + ',' + user_location.lng + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
     success: function (response) {
-      $('#input_location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
+      $('#input-location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
     },
     error: function (response) {
       console.log('Unable to convert user\'s coordinates into address: ', response);

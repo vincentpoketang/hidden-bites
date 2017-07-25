@@ -22,12 +22,12 @@ p {
   transition: opacity 1s ease-out;
 }
 
-.outside_div {
+.main-container {
   height: 100%;
   width: 100%;
 }
 
-.beforeSearch {
+.search-container {
   display: inline-block;
   position: absolute;
   z-index: 2;
@@ -41,23 +41,23 @@ p {
   text-align: center;
 }
 
-#beforeForm {
+#search-form {
   margin: 3%
 }
 
-.front_input {
+.front-input {
   width: 90%;
   max-width: 400px;
   margin: 5px auto;
 }
 
-#firstButton {
+#button-search {
   padding: 15px 30px;
   background: #7faa2c;
   border-color: #7faa2c;
 }
 
-#beforeLogo {
+#logo-container {
   margin-top: 10vh;
 }
 
@@ -75,14 +75,6 @@ p {
   margin: 25px 0;
 }
 
-#afterLogo {
-  margin: 1%;
-}
-
-.para {
-  margin: 2% 0 2% 0;
-}
-
 .header {
   padding: 3%;
   text-align: center;
@@ -92,7 +84,7 @@ h3 {
   text-align: center;
 }
 
-.AfterSearch {
+.results {
   display: inline-block;
   position: relative;
   height: 100%;
@@ -102,7 +94,7 @@ h3 {
   background: url('img/loading.gif') no-repeat center;
 }
 
-#map_header {
+#map-header {
   z-index: 1;
   position: absolute;
   left: 0;
@@ -112,12 +104,12 @@ h3 {
   background: #aad14a;
 }
 
-#map_header h3 {
+#map-header h3 {
   margin: 20px 0;
   padding: 0 60px;
 }
 
-#backToFront {
+#back-to-front {
   position: absolute;
   margin: 9px;
   z-index: 1;
@@ -126,11 +118,6 @@ h3 {
   border: 2px solid white;
   padding: 14px;
   border-radius: 50%;
-}
-
-.back_input {
-  width: 40%;
-  margin-left: 30%;
 }
 
 .input-group .form-control {

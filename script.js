@@ -11,8 +11,7 @@ $(document).ready(function () {
 });
 
 /**
- * wait for enter key to get pressed
- * @
+ * wait for enter key to get presses
  */
 $(document).keypress(function (e) {
   if (e.which == 13) {
@@ -51,7 +50,25 @@ var map;
  *
  * @type {[array]} //used to hold a list of common food categories and/or terms that would return results
  */
-var common_categories = ['Thai', 'Mexican', 'Japanese', 'Sushi', 'Sandwich', 'Chinese', 'Pizza', 'American', 'Burgers', 'Seafood', 'Italian', 'Vietnamese', 'Coffee', 'Latin American', 'Salad', 'Koren', 'BBQ'];
+var common_categories = [
+  'Thai',
+  'Mexican',
+  'Japanese',
+  'Sushi',
+  'Sandwich',
+  'Chinese',
+  'Pizza',
+  'American',
+  'Burgers',
+  'Seafood',
+  'Italian',
+  'Vietnamese',
+  'Coffee',
+  'Latin American',
+  'Salad',
+  'Koren',
+  'BBQ'
+];
 
 /**
  * clickHandler - Event Handler when user clicks the search button
@@ -286,7 +303,7 @@ function formatAddress(address) {
 }
 
 /**
- * getLocation - Get the user's current location using the HTML5 geolocation API,
+ * getCurrentLocation - Get the user's current location using the HTML5 geolocation API,
  * and pass it in object form to the savePosition function
  */
 function getCurrentLocation() {

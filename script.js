@@ -6,6 +6,8 @@
  * load stuff when document start
  */
 $(document).ready(function () {
+  new google.maps.places.Autocomplete(document.getElementById('input-location'));
+  
   clickHandler();
   getCurrentLocation();
 });
@@ -174,7 +176,7 @@ function initMap() {
     mapTypeId: 'roadmap',
     styles: googleMapRetro
   });
-
+  
   for (var i = 0; i < restaurants.length; i++) {
     var restaurant_name = "";
     for (var j = 0; j < 13 && j < restaurants[i].name.length; j++) {

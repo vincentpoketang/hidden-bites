@@ -6,7 +6,6 @@
  * load stuff when document start
  */
 $(document).ready(function() {
-  console.log(google);
   var autocomplete = new google.maps.places.Autocomplete(document.getElementById('input-location'));
 
   clickHandler();
@@ -106,6 +105,23 @@ function searchFunction() {
     .removeClass('animated fadeInLeftBig')
     .addClass('animated fadeOutLeftBig');
 }
+/**
+ * removeCopyOfObjInArray
+ *
+ */
+function removeCopyOfObjInArray(arr){
+  console.log(arr);
+  var coord = arr.map(rest=>rest.coordinates);
+  var lat = coord.map(objCoord=>objCoord.latitude);
+  var long = coord.map(objCoord=>objCoord.longitude);
+  var returnArray = [];
+  for(var i=0; i<arr.length; i++){
+    if(lat.indexOf(lat[i])===i && long.indexOf(long[i])===i){
+      returnArray.push(arr[i]);
+    }
+  }
+  return returnArray;
+}
 
 /**
  * ajaxCall - get json info from php file and if it is success, push info to app.restaurants,
@@ -132,7 +148,8 @@ function ajaxCall(term, search_location) {
           app.restaurants.splice(i, 1);
         }
       }
-
+      app.restaurants = removeCopyOfObjInArray(app.restaurants);
+      
       initMap();
       $('.map-title').text('Check out these ' + app.restaurants.length + ' spots near ' + app.search_location);
       if (app.restaurants.length === 0) {

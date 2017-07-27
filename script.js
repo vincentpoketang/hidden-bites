@@ -5,9 +5,10 @@
 /**
  * load stuff when document start
  */
-$(document).ready(function () {
-  new google.maps.places.Autocomplete(document.getElementById('input-location'));
-  
+$(document).ready(function() {
+  console.log(google);
+  var autocomplete = new google.maps.places.Autocomplete(document.getElementById('input-location'));
+
   clickHandler();
   getCurrentLocation();
 });
@@ -16,32 +17,40 @@ $(document).ready(function () {
  * wait for enter key to get pressed
  * @
  */
-$(document).keypress(function (e) {
-  if (e.which == 13) {
+$(document).keypress(function(e) {
+  if (e.which === 13) {
     searchFunction();
   }
 });
 
-/**
- * restaurants - global array to hold restaurants
- * @type {Array}
- */
-var restaurants = [];
-var search_term = 'hole in the wall ';
-
-/**
- * user_location - global variable that, as an absolute worst-case scenario, default the user location to the LF HQ
- * @type {{lat: number, lng: number}}
- */
-var user_location = {
-  lat: 33.634910999999995,
-  lng: -117.7404998
+var app = {
+  restaurants: [],
+  search_term: 'hole in the wall ',
+  user_location: {
+    lat: 33.634910999999995,
+    lng: -117.7404998
+  },
+  search_location: this.user_location,
+  common_categories: [
+    'Thai',
+    'Mexican',
+    'Japanese',
+    'Sushi',
+    'Sandwich',
+    'Chinese',
+    'Pizza',
+    'American',
+    'Burgers',
+    'Seafood',
+    'Italian',
+    'Vietnamese',
+    'Coffee',
+    'Latin American',
+    'Salad',
+    'Koren',
+    'BBQ'
+  ]
 };
-
-/**
- * search_location - global variable that stores location that is searched
- */
-var search_location = user_location;
 
 /**
  * map - global object for map
@@ -50,22 +59,16 @@ var search_location = user_location;
 var map;
 
 /**
- *
- * @type {[array]} //used to hold a list of common food categories and/or terms that would return results
- */
-var common_categories = ['Thai', 'Mexican', 'Japanese', 'Sushi', 'Sandwich', 'Chinese', 'Pizza', 'American', 'Burgers', 'Seafood', 'Italian', 'Vietnamese', 'Coffee', 'Latin American', 'Salad', 'Koren', 'BBQ'];
-
-/**
  * clickHandler - Event Handler when user clicks the search button
  */
 function clickHandler() {
   var $alert = $('#alert-location');
-  $('#button-search').click(function () {
+  $('#button-search').click(function() {
     if ($('#input-location').val() === '') {
       $alert
         .css('display', 'block')
         .addClass('animated bounceIn');
-      setTimeout(function () {
+      setTimeout(function() {
         $('#alert-location').removeClass('animated bounceIn');
       }, 500);
     } else {
@@ -75,13 +78,13 @@ function clickHandler() {
       searchFunction();
     }
   });
-  $('#back-to-front').click(function () {
+  $('#back-to-front').click(function() {
     $('.search-container')
       .removeClass('animated fadeOutLeftBig')
       .addClass('animated fadeInLeftBig');
 
     // clear the existing results
-    setTimeout(function () {
+    setTimeout(function() {
       map = {};
       $('.map-header').text('Loading...');
       $('#map').empty();
@@ -94,21 +97,21 @@ function clickHandler() {
  *
  */
 function searchFunction() {
-  search_term = 'hole in the wall ';
-  user_input = $('#input-food').val();
-  search_term += user_input;
-  search_location = $('#input-location').val();
-  ajaxCall(search_term, search_location);
+  app.search_term = 'hole in the wall ';
+  app.user_input = $('#input-food').val();
+  app.search_term += app.user_input;
+  app.search_location = $('#input-location').val();
+  ajaxCall(app.search_term, app.search_location);
   $('.search-container')
     .removeClass('animated fadeInLeftBig')
     .addClass('animated fadeOutLeftBig');
 }
 
 /**
- * ajaxCall - get json info from php file and if it is success, push info to restaurants,
+ * ajaxCall - get json info from php file and if it is success, push info to app.restaurants,
  *              else console.log an error
  * @params term - input of the term the user is searching
- * @params search_location - the area the user input and/or their current location
+ * @params app.search_location - the area the user input and/or their current location
  */
 function ajaxCall(term, search_location) {
   $.ajax({
@@ -119,24 +122,24 @@ function ajaxCall(term, search_location) {
       'term': term
     },
     url: 'yelp.php',
-    success: function (response) {
-      restaurants = response;
+    success: function(response) {
+      app.restaurants = response;
 
       // Occasionally Yelp bugs out and doesn't send us lat/long coordinates,
       // if that's the case, we need to remove those places from the results array
-      for (var i = 0; i < restaurants.length; i++) {
-        if (!restaurants[i].coordinates.latitude || !restaurants[i].coordinates.longitude){
-          restaurants.splice(i, 1);
+      for (var i = 0; i < app.restaurants.length; i++) {
+        if (!app.restaurants[i].coordinates.latitude || !app.restaurants[i].coordinates.longitude) {
+          app.restaurants.splice(i, 1);
         }
       }
 
       initMap();
-      $('.map-title').text('Check out these ' + restaurants.length + ' spots near ' + search_location);
-      if (restaurants.length === 0) {
+      $('.map-title').text('Check out these ' + app.restaurants.length + ' spots near ' + app.search_location);
+      if (app.restaurants.length === 0) {
         noResultsModal();
       }
     },
-    error: function (response) {
+    error: function(response) {
       console.log(response);
     }
   });
@@ -152,12 +155,12 @@ function noResultsModal() {
   });
   $('.modal-title').text('Uh-Oh!');
   $('.modal-title').addClass('no-results-header');
-  $(categories_div).append('Sorry but there are no results for ' + user_input + ' near ' + search_location + '.');
+  $(categories_div).append('Sorry but there are no results for ' + app.user_input + ' near ' + app.search_location + '.');
   $(categories_div).append('<br>' + 'Try one of these common food categories:');
   var categories_list = $('<ul>');
-  for (i = 0; i < common_categories.length; i++) {
+  for (var i = 0; i < app.common_categories.length; i++) {
     var food_category_li = $('<li>');
-    $(food_category_li).append(common_categories[i]);
+    $(food_category_li).append(app.common_categories[i]);
     $(categories_list).append(food_category_li);
   }
   $('.modal-body').append(categories_div, categories_list);
@@ -177,24 +180,24 @@ function initMap() {
     styles: googleMapRetro
   });
   var markers = [];
-  for (var i = 0; i < restaurants.length; i++) {
+  for (var i = 0; i < app.restaurants.length; i++) {
     var restaurant_name = "";
-    for (var j = 0; j < 13 && j < restaurants[i].name.length; j++) {
-      restaurant_name += restaurants[i].name[j];
+    for (var j = 0; j < 13 && j < app.restaurants[i].name.length; j++) {
+      restaurant_name += app.restaurants[i].name[j];
     }
-    if (restaurants[i].name.length > 13) {
+    if (app.restaurants[i].name.length > 13) {
       restaurant_name += '...';
     }
 
     markers[i] = new google.maps.Marker({
-      position: new google.maps.LatLng(restaurants[i].coordinates.latitude, restaurants[i].coordinates.longitude),
+      position: new google.maps.LatLng(app.restaurants[i].coordinates.latitude, app.restaurants[i].coordinates.longitude),
       map: map,
       icon: 'img/label-bg.png',
       mapId: i,
       label: restaurant_name
     });
     markers[i].addListener('click', function () {
-      var business = restaurants[this.mapId];
+      var business = app.restaurants[this.mapId];
       modalEdits(business);
     });
   }
@@ -209,12 +212,12 @@ function initMap() {
 function findCenterForMap() {
   var globalTotalLat = 0;
   var globalTotalLng = 0;
-  for (var i = 0; i < restaurants.length; i++) {
-    globalTotalLat += restaurants[i].coordinates.latitude;
-    globalTotalLng += restaurants[i].coordinates.longitude;
+  for (var i = 0; i < app.restaurants.length; i++) {
+    globalTotalLat += app.restaurants[i].coordinates.latitude;
+    globalTotalLng += app.restaurants[i].coordinates.longitude;
   }
-  globalTotalLat /= restaurants.length;
-  globalTotalLng /= restaurants.length;
+  globalTotalLat /= app.restaurants.length;
+  globalTotalLng /= app.restaurants.length;
   return [globalTotalLat, globalTotalLng];
 }
 
@@ -306,7 +309,7 @@ function getCurrentLocation() {
  * @param {object} position
  */
 function savePosition(position) {
-  user_location = {
+  app.user_location = {
     lat: position.coords.latitude,
     lng: position.coords.longitude
   };
@@ -320,11 +323,11 @@ function getAddressFromCoords() {
   $.ajax({
     method: 'get',
     dataType: 'json',
-    url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + user_location.lat + ',' + user_location.lng + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
-    success: function (response) {
+    url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + app.user_location.lat + ',' + app.user_location.lng + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
+    success: function(response) {
       $('#input-location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
     },
-    error: function (response) {
+    error: function(response) {
       console.log('Unable to convert user\'s coordinates into address: ', response);
     }
   });

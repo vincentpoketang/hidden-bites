@@ -7,6 +7,7 @@ body {
   height: 100%;
   width: 100%;
   font-size: 0;
+  font-family: 'Droid Sans', Helvetica, Arial, sans-serif;
 }
 
 p {
@@ -57,6 +58,10 @@ p {
   border-color: #7faa2c;
 }
 
+#button-search:hover {
+  background: #95c733;
+}
+
 #logo-container {
   margin-top: 10vh;
 }
@@ -69,10 +74,21 @@ p {
   height: auto;
 }
 
+.logo img {
+  width: 100%;
+  height: auto;
+}
+
 .intro-text {
   color: white;
   font-size: 22px;
   margin: 25px 0;
+}
+
+@media (max-width: 480px) {
+  .intro-text {
+    font-size: 18px;
+  }
 }
 
 .header {

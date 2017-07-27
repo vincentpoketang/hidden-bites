@@ -176,7 +176,7 @@ function initMap() {
     mapTypeId: 'roadmap',
     styles: googleMapRetro
   });
-  
+  var markers = [];
   for (var i = 0; i < restaurants.length; i++) {
     var restaurant_name = "";
     for (var j = 0; j < 13 && j < restaurants[i].name.length; j++) {
@@ -186,18 +186,20 @@ function initMap() {
       restaurant_name += '...';
     }
 
-    var marker = new google.maps.Marker({
+    markers[i] = new google.maps.Marker({
       position: new google.maps.LatLng(restaurants[i].coordinates.latitude, restaurants[i].coordinates.longitude),
       map: map,
       icon: 'img/label-bg.png',
       mapId: i,
       label: restaurant_name
     });
-    marker.addListener('click', function () {
+    markers[i].addListener('click', function () {
       var business = restaurants[this.mapId];
       modalEdits(business);
     });
   }
+  new MarkerClusterer(map, markers,
+            {imagePath: './img/m'});
 }
 
 /**

@@ -5,9 +5,10 @@
 /**
  * load stuff when document start
  */
-$(document).ready(function () {
+$(document).ready(function() {
+  console.log(google);
   var autocomplete = new google.maps.places.Autocomplete(document.getElementById('input-location'));
-  
+
   clickHandler();
   getCurrentLocation();
 });
@@ -16,7 +17,7 @@ $(document).ready(function () {
  * wait for enter key to get pressed
  * @
  */
-$(document).keypress(function (e) {
+$(document).keypress(function(e) {
   if (e.which === 13) {
     searchFunction();
   }
@@ -31,22 +32,22 @@ var app = {
   },
   search_location: this.user_location,
   common_categories: [
-    'Thai', 
-    'Mexican', 
-    'Japanese', 
-    'Sushi', 
-    'Sandwich', 
-    'Chinese', 
-    'Pizza', 
-    'American', 
-    'Burgers', 
-    'Seafood', 
-    'Italian', 
-    'Vietnamese', 
-    'Coffee', 
-    'Latin American', 
-    'Salad', 
-    'Koren', 
+    'Thai',
+    'Mexican',
+    'Japanese',
+    'Sushi',
+    'Sandwich',
+    'Chinese',
+    'Pizza',
+    'American',
+    'Burgers',
+    'Seafood',
+    'Italian',
+    'Vietnamese',
+    'Coffee',
+    'Latin American',
+    'Salad',
+    'Koren',
     'BBQ'
   ]
 };
@@ -62,12 +63,12 @@ var map;
  */
 function clickHandler() {
   var $alert = $('#alert-location');
-  $('#button-search').click(function () {
+  $('#button-search').click(function() {
     if ($('#input-location').val() === '') {
       $alert
         .css('display', 'block')
         .addClass('animated bounceIn');
-      setTimeout(function () {
+      setTimeout(function() {
         $('#alert-location').removeClass('animated bounceIn');
       }, 500);
     } else {
@@ -77,13 +78,13 @@ function clickHandler() {
       searchFunction();
     }
   });
-  $('#back-to-front').click(function () {
+  $('#back-to-front').click(function() {
     $('.search-container')
       .removeClass('animated fadeOutLeftBig')
       .addClass('animated fadeInLeftBig');
 
     // clear the existing results
-    setTimeout(function () {
+    setTimeout(function() {
       map = {};
       $('.map-header').text('Loading...');
       $('#map').empty();
@@ -121,13 +122,13 @@ function ajaxCall(term, search_location) {
       'term': term
     },
     url: 'yelp.php',
-    success: function (response) {
+    success: function(response) {
       app.restaurants = response;
 
       // Occasionally Yelp bugs out and doesn't send us lat/long coordinates,
       // if that's the case, we need to remove those places from the results array
       for (var i = 0; i < app.restaurants.length; i++) {
-        if (!app.restaurants[i].coordinates.latitude || !app.restaurants[i].coordinates.longitude){
+        if (!app.restaurants[i].coordinates.latitude || !app.restaurants[i].coordinates.longitude) {
           app.restaurants.splice(i, 1);
         }
       }
@@ -138,7 +139,7 @@ function ajaxCall(term, search_location) {
         noResultsModal();
       }
     },
-    error: function (response) {
+    error: function(response) {
       console.log(response);
     }
   });
@@ -195,7 +196,7 @@ function initMap() {
       mapId: i,
       label: restaurant_name
     });
-    marker.addListener('click', function () {
+    marker.addListener('click', function() {
       var business = app.restaurants[this.mapId];
       modalEdits(business);
     });
@@ -321,10 +322,10 @@ function getAddressFromCoords() {
     method: 'get',
     dataType: 'json',
     url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + app.user_location.lat + ',' + app.user_location.lng + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
-    success: function (response) {
+    success: function(response) {
       $('#input-location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
     },
-    error: function (response) {
+    error: function(response) {
       console.log('Unable to convert user\'s coordinates into address: ', response);
     }
   });

@@ -89,7 +89,6 @@ function searchFunction() {
  * removeCopyOfObjInArray
  */
 function removeCopyOfObjInArray(arr){
-  console.log(arr);
   var coord = arr.map(rest=>rest.coordinates);
   var lat = coord.map(objCoord=>objCoord.latitude);
   var long = coord.map(objCoord=>objCoord.longitude);
@@ -104,7 +103,7 @@ function removeCopyOfObjInArray(arr){
 
 /**
  * ajaxCall - get json info from php file and if it is success, push info to app.restaurants,
- *              else console.log an error
+ *
  * @params term - input of the term the user is searching
  * @params app.search_location - the area the user input and/or their current location
  */
@@ -128,15 +127,14 @@ function ajaxCall(term, search_location) {
         }
       }
       app.restaurants = removeCopyOfObjInArray(app.restaurants);
-      
       initMap();
       $('.map-title').text('Check out these ' + app.restaurants.length + ' spots near ' + app.search_location);
       if (app.restaurants.length === 0) {
         noResultsModal();
       }
     },
-    error: function(response) {
-      console.log(response);
+    error: function() {
+      noResultsModal('It seems an error occurred! Try refreshing the page.');
     }
   });
 }
@@ -144,22 +142,29 @@ function ajaxCall(term, search_location) {
 /**
  * function that will pop-up if the search result is zero
  */
-function noResultsModal() {
+function noResultsModal(message) {
   $('.modal-body').empty();
   var categories_div = $('<div>', {
     class: 'modal-div no-results'
   });
   $('.modal-title').text('Uh-Oh!');
   $('.modal-title').addClass('no-results-header');
-  $(categories_div).append('Sorry but there are no results for ' + app.user_input + ' near ' + app.search_location + '.');
-  $(categories_div).append('<br>' + 'Try one of these common food categories:');
-  var categories_list = $('<ul>');
-  for (var i = 0; i < app.common_categories.length; i++) {
-    var food_category_li = $('<li>');
-    $(food_category_li).append(app.common_categories[i]);
-    $(categories_list).append(food_category_li);
+
+  if (!message) {
+    $(categories_div).append('Sorry but there are no results for ' + app.user_input + ' near ' + app.search_location + '.');
+    $(categories_div).append('<br>' + 'Try one of these common food categories:');
+    var categories_list = $('<ul>');
+    for (var i = 0; i < app.common_categories.length; i++) {
+      var food_category_li = $('<li>');
+      $(food_category_li).append(app.common_categories[i]);
+      $(categories_list).append(food_category_li);
+    }
+    $('.modal-body').append(categories_div, categories_list);
+  } else {
+    $(categories_div).append(message);
+    $('.modal-body').append(categories_div);
   }
-  $('.modal-body').append(categories_div, categories_list);
+
   $('#restaurant-modal').modal('show');
 }
 
@@ -198,7 +203,7 @@ function initMap() {
     });
   }
   new MarkerClusterer(map, markers,
-            {imagePath: './img/m'});
+    {imagePath: './img/m'});
 }
 
 /**
@@ -222,50 +227,50 @@ function findCenterForMap() {
  * @param business
  */
 function modalEdits(business){
-    $('.modal-title').text(business.name);
-    $('.modal-title').removeClass('no-results-header');
-    var div = $('<div>',{
-        class: 'modal-div'
+  $('.modal-title').text(business.name);
+  $('.modal-title').removeClass('no-results-header');
+  var div = $('<div>',{
+    class: 'modal-div'
+  });
+  var img = $('<img>',{
+    src: business.image_url
+  });
+  var address = $('<h4>',{
+    text: 'Address'
+  });
+  var address_info = $('<p>',{
+    text: formatAddress(business.location)
+  });
+  var categories = $('<h4>',{
+    text: 'Categories'
+  });
+  var categories_listing = business.categories[0].title;
+  for(var i = 1; i < business.categories.length; i++){
+    categories_listing += ", " + business.categories[i].title;
+  }
+  var categories_info = $('<p>',{
+    text: categories_listing
+  });
+  var rating = $('<h4>',{
+    text: 'Rating'
+  });
+  var rating_info = $('<p>');
+  for(var i = 0; i < business.rating; i++){
+    var full_star = $('<img>',{
+      src: "img/Star.png",
+      height: '20px'
     });
-    var img = $('<img>',{
-        src: business.image_url
-    });
-    var address = $('<h4>',{
-        text: 'Address'
-    });
-    var address_info = $('<p>',{
-        text: formatAddress(business.location)
-    });
-    var categories = $('<h4>',{
-        text: 'Categories'
-    });
-    var categories_listing = business.categories[0].title;
-    for(var i = 1; i < business.categories.length; i++){
-        categories_listing += ", " + business.categories[i].title;
+    if(i+0.5 === business.rating){
+      var half_star = $('<img>',{
+        src: "img/Half Star.png",
+        height: '20px'
+      });
+      $(rating_info).append(half_star);
     }
-    var categories_info = $('<p>',{
-        text: categories_listing
-    });
-    var rating = $('<h4>',{
-        text: 'Rating'
-    });
-    var rating_info = $('<p>');
-    for(var i = 0; i < business.rating; i++){
-        var full_star = $('<img>',{
-            src: "img/Star.png",
-            height: '20px'
-        });
-        if(i+0.5 === business.rating){
-            var half_star = $('<img>',{
-                src: "img/Half Star.png",
-                height: '20px'
-            });
-            $(rating_info).append(half_star);
-        }
-        else {
-            $(rating_info).append(full_star);
-        }
+    else {
+      $(rating_info).append(full_star);
     }
+  }
   $(div).append(img, address, address_info, categories, categories_info, rating, rating_info, website_url);
   $('.modal-body').empty().append(div);
   $('#restaurant-modal').modal('show');
@@ -277,7 +282,7 @@ function modalEdits(business){
  * @returns {string}
  */
 function formatAddress(address){
-    return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
+  return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
 }
 
 /**
@@ -285,11 +290,11 @@ function formatAddress(address){
  * and pass it in object form to the savePosition function
  */
 function getCurrentLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(savePosition, positionError);
-    } else {
-        console.log("Geolocation is not supported by this browser.");
-    }
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(savePosition);
+  } else {
+    noResultsModal("Geolocation is not supported by this browser.");
+  }
 }
 
 /**
@@ -316,41 +321,16 @@ function getAddressFromCoords() {
       $('#input-location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
     },
     error: function(response) {
-      console.log('Unable to convert user\'s coordinates into address: ', response);
+      noResultsModal('Unable to convert user\'s coordinates into address.');
     }
   });
-}
-
-/**
- * positionError - handles errors if we're unable to determine the user's location
- * @param {object} error
- */
-function positionError(error) {
-  switch (error.code) {
-    case error.PERMISSION_DENIED:
-      console.log("User denied the request for Geolocation.");
-      break;
-    case error.POSITION_UNAVAILABLE:
-      console.log("Location information is unavailable.");
-      break;
-    case error.TIMEOUT:
-      console.log("The request to get user location timed out.");
-      break;
-    case error.UNKNOWN_ERROR:
-      console.log("An unknown error occurred.");
-      break;
-    default:
-      console.log("An unknown error occurred.");
-  }
 }
 
 /**
  * load stuff when document start
  */
 $(document).ready(function() {
-  console.log(google);
-  var autocomplete = new google.maps.places.Autocomplete(document.getElementById('input-location'));
-
+  new google.maps.places.Autocomplete(document.getElementById('input-location'));
   clickHandler();
   getCurrentLocation();
 });

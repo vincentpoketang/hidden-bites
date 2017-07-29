@@ -73,7 +73,6 @@ function clickHandler() {
 
 /**
  * search function
- *
  */
 function searchFunction() {
   app.search_term = 'hole in the wall ';
@@ -85,9 +84,9 @@ function searchFunction() {
     .removeClass('animated fadeInLeftBig')
     .addClass('animated fadeOutLeftBig');
 }
+
 /**
  * removeCopyOfObjInArray
- *
  */
 function removeCopyOfObjInArray(arr){
   console.log(arr);
@@ -222,71 +221,63 @@ function findCenterForMap() {
  * modalEdits - set up modal and modify it
  * @param business
  */
-function modalEdits(business) {
-  $('.modal-title').text(business.name);
-  $('.modal-title').removeClass('no-results-header');
-  var div = $('<div>', {
-    class: 'modal-div'
-  });
-  var img = $('<img>', {
-    src: business.image_url
-  });
-  var address = $('<h4>', {
-    text: 'Address'
-  });
-  var address_info = $('<p>', {
-    text: formatAddress(business.location)
-  });
-  var categories = $('<h4>', {
-    text: 'Categories'
-  });
-  var categories_listing = business.categories[0].title;
-  for (var i = 1; i < business.categories.length; i++) {
-    categories_listing += ", " + business.categories[i].title;
-  }
-  var categories_info = $('<p>', {
-    text: categories_listing
-  });
-  var website_url = $('<a>', {
-    text: 'View on Yelp',
-    href: business.url,
-    target: '_blank'
-  });
-
-  var rating = $('<h4>', {
-    text: 'Rating'
-  });
-  var rating_info = $('<p>');
-
-  for (var i = 0; i < business.rating; i++) {
-    var full_star = $('<img>', {
-      src: "img/Star.png",
-      height: '20px'
+function modalEdits(business){
+    $('.modal-title').text(business.name);
+    $('.modal-title').removeClass('no-results-header');
+    var div = $('<div>',{
+        class: 'modal-div'
     });
-    if (i + 0.5 === business.rating) {
-      var half_star = $('<img>', {
-        src: "img/Half Star.png",
-        height: '20px'
-      });
-      $(rating_info).append(half_star);
+    var img = $('<img>',{
+        src: business.image_url
+    });
+    var address = $('<h4>',{
+        text: 'Address'
+    });
+    var address_info = $('<p>',{
+        text: formatAddress(business.location)
+    });
+    var categories = $('<h4>',{
+        text: 'Categories'
+    });
+    var categories_listing = business.categories[0].title;
+    for(var i = 1; i < business.categories.length; i++){
+        categories_listing += ", " + business.categories[i].title;
     }
-    else {
-      $(rating_info).append(full_star);
+    var categories_info = $('<p>',{
+        text: categories_listing
+    });
+    var rating = $('<h4>',{
+        text: 'Rating'
+    });
+    var rating_info = $('<p>');
+    for(var i = 0; i < business.rating; i++){
+        var full_star = $('<img>',{
+            src: "img/Star.png",
+            height: '20px'
+        });
+        if(i+0.5 === business.rating){
+            var half_star = $('<img>',{
+                src: "img/Half Star.png",
+                height: '20px'
+            });
+            $(rating_info).append(half_star);
+        }
+        else {
+            $(rating_info).append(full_star);
+        }
     }
-  }
-
   $(div).append(img, address, address_info, categories, categories_info, rating, rating_info, website_url);
   $('.modal-body').empty().append(div);
   $('#restaurant-modal').modal('show');
 }
 
 /**
- * formatAddress - format the address object that is passed and return the formatted address string
+ * formatAddress - format the address that is passed and return the formatted address
  * @param address
  * @returns {string}
  */
-function formatAddress(address) {
-  return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
+function formatAddress(address){
+    return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
 }
 
 /**
@@ -294,11 +285,11 @@ function formatAddress(address) {
  * and pass it in object form to the savePosition function
  */
 function getCurrentLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(savePosition, positionError);
-  } else {
-    console.log("Geolocation is not supported by this browser.");
-  }
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(savePosition, positionError);
+    } else {
+        console.log("Geolocation is not supported by this browser.");
+    }
 }
 
 /**

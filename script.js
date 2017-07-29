@@ -89,7 +89,6 @@ function searchFunction() {
  * removeCopyOfObjInArray
  */
 function removeCopyOfObjInArray(arr){
-  console.log(arr);
   var coord = arr.map(rest=>rest.coordinates);
   var lat = coord.map(objCoord=>objCoord.latitude);
   var long = coord.map(objCoord=>objCoord.longitude);
@@ -104,7 +103,7 @@ function removeCopyOfObjInArray(arr){
 
 /**
  * ajaxCall - get json info from php file and if it is success, push info to app.restaurants,
- *              else console.log an error
+ *
  * @params term - input of the term the user is searching
  * @params app.search_location - the area the user input and/or their current location
  */
@@ -128,15 +127,14 @@ function ajaxCall(term, search_location) {
         }
       }
       app.restaurants = removeCopyOfObjInArray(app.restaurants);
-
       initMap();
       $('.map-title').text('Check out these ' + app.restaurants.length + ' spots near ' + app.search_location);
       if (app.restaurants.length === 0) {
         noResultsModal();
       }
     },
-    error: function(response) {
-      console.log(response);
+    error: function() {
+      noResultsModal('It seems an error occurred! Try refreshing the page.');
     }
   });
 }
@@ -144,22 +142,29 @@ function ajaxCall(term, search_location) {
 /**
  * function that will pop-up if the search result is zero
  */
-function noResultsModal() {
+function noResultsModal(message) {
   $('.modal-body').empty();
   var categories_div = $('<div>', {
     class: 'modal-div no-results'
   });
   $('.modal-title').text('Uh-Oh!');
   $('.modal-title').addClass('no-results-header');
-  $(categories_div).append('Sorry but there are no results for ' + app.user_input + ' near ' + app.search_location + '.');
-  $(categories_div).append('<br>' + 'Try one of these common food categories:');
-  var categories_list = $('<ul>');
-  for (var i = 0; i < app.common_categories.length; i++) {
-    var food_category_li = $('<li>');
-    $(food_category_li).append(app.common_categories[i]);
-    $(categories_list).append(food_category_li);
+
+  if (!message) {
+    $(categories_div).append('Sorry but there are no results for ' + app.user_input + ' near ' + app.search_location + '.');
+    $(categories_div).append('<br>' + 'Try one of these common food categories:');
+    var categories_list = $('<ul>');
+    for (var i = 0; i < app.common_categories.length; i++) {
+      var food_category_li = $('<li>');
+      $(food_category_li).append(app.common_categories[i]);
+      $(categories_list).append(food_category_li);
+    }
+    $('.modal-body').append(categories_div, categories_list);
+  } else {
+    $(categories_div).append(message);
+    $('.modal-body').append(categories_div);
   }
-  $('.modal-body').append(categories_div, categories_list);
+
   $('#restaurant-modal').modal('show');
 }
 
@@ -286,9 +291,9 @@ function formatAddress(address){
  */
 function getCurrentLocation() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(savePosition, positionError);
+    navigator.geolocation.getCurrentPosition(savePosition);
   } else {
-    console.log("Geolocation is not supported by this browser.");
+    noResultsModal("Geolocation is not supported by this browser.");
   }
 }
 
@@ -316,41 +321,16 @@ function getAddressFromCoords() {
       $('#input-location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
     },
     error: function(response) {
-      console.log('Unable to convert user\'s coordinates into address: ', response);
+      noResultsModal('Unable to convert user\'s coordinates into address.');
     }
   });
-}
-
-/**
- * positionError - handles errors if we're unable to determine the user's location
- * @param {object} error
- */
-function positionError(error) {
-  switch (error.code) {
-    case error.PERMISSION_DENIED:
-      console.log("User denied the request for Geolocation.");
-      break;
-    case error.POSITION_UNAVAILABLE:
-      console.log("Location information is unavailable.");
-      break;
-    case error.TIMEOUT:
-      console.log("The request to get user location timed out.");
-      break;
-    case error.UNKNOWN_ERROR:
-      console.log("An unknown error occurred.");
-      break;
-    default:
-      console.log("An unknown error occurred.");
-  }
 }
 
 /**
  * load stuff when document start
  */
 $(document).ready(function() {
-  console.log(google);
-  var autocomplete = new google.maps.places.Autocomplete(document.getElementById('input-location'));
-
+  new google.maps.places.Autocomplete(document.getElementById('input-location'));
   clickHandler();
   getCurrentLocation();
 });

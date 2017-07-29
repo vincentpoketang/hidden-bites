@@ -2,26 +2,6 @@
  * Created by C4.17 Team 4 Hackathon 2 on 5/10/2017.
  */
 
-/**
- * load stuff when document start
- */
-$(document).ready(function() {
-  var autocomplete = new google.maps.places.Autocomplete(document.getElementById('input-location'));
-
-  clickHandler();
-  getCurrentLocation();
-});
-
-/**
- * wait for enter key to get pressed
- * @
- */
-$(document).keypress(function(e) {
-  if (e.which === 13) {
-    searchFunction();
-  }
-});
-
 var app = {
   restaurants: [],
   search_term: 'hole in the wall ',
@@ -372,3 +352,24 @@ function positionError(error) {
       console.log("An unknown error occurred.");
   }
 }
+
+/**
+ * load stuff when document start
+ */
+$(document).ready(function() {
+  console.log(google);
+  var autocomplete = new google.maps.places.Autocomplete(document.getElementById('input-location'));
+
+  clickHandler();
+  getCurrentLocation();
+});
+
+/**
+ * wait for enter key to get pressed
+ * @
+ */
+$(document).keypress(function(e) {
+  if (e.which === 13) {
+    searchFunction();
+  }
+});

@@ -38,9 +38,9 @@ var app = {
 var map;
 
 /**
- * clickHandler - Event Handler when user clicks the search button
+ * setUpClickHandlers - Event Handler when user clicks the search button
  */
-function clickHandler() {
+function setUpClickHandlers() {
   var $alert = $('#alert-location');
   $('#button-search').click(function() {
     if ($('#input-location').val() === '') {
@@ -55,9 +55,13 @@ function clickHandler() {
         .removeClass('animated bounceIn')
         .css('display', 'none');
       searchFunction();
+      $('#input-food').attr('disabled','disabled');
+      $('#input-location').attr('disabled','disabled');
     }
   });
   $('#back-to-front').click(function() {
+    $('#input-food').removeAttr('disabled');
+    $('#input-location').removeAttr('disabled');
     $('.search-container')
       .removeClass('animated fadeOutLeftBig')
       .addClass('animated fadeInLeftBig');
@@ -271,6 +275,12 @@ function modalEdits(business){
       $(rating_info).append(full_star);
     }
   }
+  var website_url = $('<a>', {
+    text: 'View on Yelp',
+    href: business.url,
+    target: '_blank'
+  });
+
   $(div).append(img, address, address_info, categories, categories_info, rating, rating_info, website_url);
   $('.modal-body').empty().append(div);
   $('#restaurant-modal').modal('show');
@@ -331,7 +341,7 @@ function getAddressFromCoords() {
  */
 $(document).ready(function() {
   new google.maps.places.Autocomplete(document.getElementById('input-location'));
-  clickHandler();
+  setUpClickHandlers();
   getCurrentLocation();
 });
 

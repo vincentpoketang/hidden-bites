@@ -271,6 +271,12 @@ function modalEdits(business){
       $(rating_info).append(full_star);
     }
   }
+  var website_url = $('<a>', {
+    text: 'View on Yelp',
+    href: business.url,
+    target: '_blank'
+  });
+
   $(div).append(img, address, address_info, categories, categories_info, rating, rating_info, website_url);
   $('.modal-body').empty().append(div);
   $('#restaurant-modal').modal('show');

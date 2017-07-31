@@ -106,8 +106,9 @@ h3 {
   height: 100%;
   width: 100%;
   margin: 0;
-  padding: 0;
   background: url('img/loading.gif') no-repeat center;
+  box-sizing: border-box;
+  padding-top: 65px;
 }
 
 #map-header {

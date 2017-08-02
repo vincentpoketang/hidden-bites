@@ -32,8 +32,8 @@ var app = {
 };
 
 /**
- * map - global object for map
- * @type {Object}
+ * map - global variable to hold the google map object
+ * @type {object}
  */
 var map;
 
@@ -41,38 +41,43 @@ var map;
  * setUpClickHandlers - Event Handler when user clicks the search button
  */
 function setUpClickHandlers() {
-  var $alert = $('#alert-location');
-  $('#button-search').click(function() {
-    if ($('#input-location').val() === '') {
-      $alert
-        .css('display', 'block')
-        .addClass('animated bounceIn');
-      setTimeout(function() {
-        $('#alert-location').removeClass('animated bounceIn');
-      }, 500);
-    } else {
-      $alert
-        .removeClass('animated bounceIn')
-        .css('display', 'none');
-      searchFunction();
-      $('#input-food').attr('disabled','disabled');
-      $('#input-location').attr('disabled','disabled');
-    }
-  });
-  $('#back-to-front').click(function() {
-    $('#input-food').removeAttr('disabled');
-    $('#input-location').removeAttr('disabled');
-    $('.search-container')
-      .removeClass('animated fadeOutLeftBig')
-      .addClass('animated fadeInLeftBig');
+  $('#button-search').click(search);
+  $('#back-to-front').click(startNewSearch);
+}
 
-    // clear the existing results
+function search() {
+  var $locationInput = $('#input-location');
+  var $alert = $('#alert-location');
+  if ($locationInput.val() === '') {
+    $alert
+      .css('display', 'block')
+      .addClass('animated bounceIn');
     setTimeout(function() {
-      map = {};
-      $('.map-header').text('Loading...');
-      $('#map').empty();
-    }, 1000);
-  });
+      $('#alert-location').removeClass('animated bounceIn');
+    }, 500);
+  } else {
+    $alert
+      .removeClass('animated bounceIn')
+      .css('display', 'none');
+    searchFunction();
+    $('#input-food').attr('disabled', 'disabled');
+    $locationInput.attr('disabled', 'disabled');
+  }
+}
+
+function startNewSearch() {
+  $('#input-food').removeAttr('disabled');
+  $('#input-location').removeAttr('disabled');
+  $('.search-container')
+    .removeClass('animated fadeOutLeftBig')
+    .addClass('animated fadeInLeftBig');
+
+  // clear the existing results page so it'll be ready for the next search
+  setTimeout(function() {
+    map = {};
+    $('.map-header').text('Loading...');
+    $('#map').empty();
+  }, 1000);
 }
 
 /**
@@ -83,7 +88,7 @@ function searchFunction() {
   app.user_input = $('#input-food').val();
   app.search_term += app.user_input;
   app.search_location = $('#input-location').val();
-  ajaxCall(app.search_term, app.search_location);
+  getRestaurantData(app.search_term, app.search_location);
   $('.search-container')
     .removeClass('animated fadeInLeftBig')
     .addClass('animated fadeOutLeftBig');
@@ -92,13 +97,13 @@ function searchFunction() {
 /**
  * removeCopyOfObjInArray
  */
-function removeCopyOfObjInArray(arr){
-  var coord = arr.map(rest=>rest.coordinates);
-  var lat = coord.map(objCoord=>objCoord.latitude);
-  var long = coord.map(objCoord=>objCoord.longitude);
+function removeCopyOfObjInArray(arr) {
+  var coord = arr.map(rest => rest.coordinates);
+  var lat = coord.map(objCoord => objCoord.latitude);
+  var long = coord.map(objCoord => objCoord.longitude);
   var returnArray = [];
-  for(var i=0; i<arr.length; i++){
-    if(lat.indexOf(lat[i])===i && long.indexOf(long[i])===i){
+  for (var i = 0; i < arr.length; i++) {
+    if (lat.indexOf(lat[i]) === i && long.indexOf(long[i]) === i) {
       returnArray.push(arr[i]);
     }
   }
@@ -106,12 +111,12 @@ function removeCopyOfObjInArray(arr){
 }
 
 /**
- * ajaxCall - get json info from php file and if it is success, push info to app.restaurants,
+ * getRestaurantData - get json info from php file and if it is success, push info to app.restaurants
  *
  * @params term - input of the term the user is searching
  * @params app.search_location - the area the user input and/or their current location
  */
-function ajaxCall(term, search_location) {
+function getRestaurantData(term, search_location) {
   $.ajax({
     method: 'get',
     dataType: 'json',
@@ -144,46 +149,49 @@ function ajaxCall(term, search_location) {
 }
 
 /**
- * function that will pop-up if the search result is zero
+ * noResultsModal - set up modal to display notice if search returns no results
  */
 function noResultsModal(message) {
-  $('.modal-body').empty();
-  var categories_div = $('<div>', {
+  var $modal = $('.modal-body');
+  $modal.empty();
+  var $categories_div = $('<div>', {
     class: 'modal-div no-results'
   });
-  $('.modal-title').text('Uh-Oh!');
-  $('.modal-title').addClass('no-results-header');
+  var $modalTitle = $('.modal-title');
+  $modalTitle.text('Uh-Oh!');
+  $modalTitle.addClass('no-results-header');
 
   if (!message) {
-    $(categories_div).append('Sorry but there are no results for ' + app.user_input + ' near ' + app.search_location + '.');
-    $(categories_div).append('<br>' + 'Try one of these common food categories:');
-    var categories_list = $('<ul>');
+    $categories_div.append('Sorry but there are no results for ' + app.user_input + ' near ' + app.search_location + '.');
+    $categories_div.append('<br>' + 'Try one of these common food categories:');
+    var $categories_list = $('<ul>');
     for (var i = 0; i < app.common_categories.length; i++) {
-      var food_category_li = $('<li>');
-      $(food_category_li).append(app.common_categories[i]);
-      $(categories_list).append(food_category_li);
+      var $food_category_li = $('<li>');
+      $food_category_li.append(app.common_categories[i]);
+      $categories_list.append($food_category_li);
     }
-    $('.modal-body').append(categories_div, categories_list);
+    $modal.append($categories_div, $categories_list);
   } else {
-    $(categories_div).append(message);
-    $('.modal-body').append(categories_div);
+    $categories_div.append(message);
+    $modal.append($categories_div);
   }
 
   $('#restaurant-modal').modal('show');
 }
 
 /**
- * initMap - initialize map object and setting up markers
+ * initMap - initialize map object and set up markers
  */
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    center: new google.maps.LatLng(findCenterForMap()[0], findCenterForMap()[1]),
+    center: findCenterForMap(app.restaurants),
     zoom: 13,
     streetViewControl: false,
     mapTypeControl: false,
     mapTypeId: 'roadmap',
     styles: googleMapRetro
   });
+
   var markers = [];
   for (var i = 0; i < app.restaurants.length; i++) {
     var restaurant_name = "";
@@ -193,7 +201,6 @@ function initMap() {
     if (app.restaurants[i].name.length > 13) {
       restaurant_name += '...';
     }
-
     markers[i] = new google.maps.Marker({
       position: new google.maps.LatLng(app.restaurants[i].coordinates.latitude, app.restaurants[i].coordinates.longitude),
       map: map,
@@ -201,9 +208,9 @@ function initMap() {
       mapId: i,
       label: restaurant_name
     });
-    markers[i].addListener('click', function () {
+    markers[i].addListener('click', function() {
       var business = app.restaurants[this.mapId];
-      modalEdits(business);
+      modalSetup(business);
     });
   }
   new MarkerClusterer(map, markers,
@@ -211,61 +218,48 @@ function initMap() {
 }
 
 /**
- * findCenterForMap - get all the latitude and longitude and added them together and get back average location for each one
- * @returns {[*,*]}
+ * findCenterForMap - add up all lat/lng values and divide by total locations to obtain average/center for map display
+ * @returns {object}
  */
-function findCenterForMap() {
-  var globalTotalLat = 0;
-  var globalTotalLng = 0;
-  for (var i = 0; i < app.restaurants.length; i++) {
-    globalTotalLat += app.restaurants[i].coordinates.latitude;
-    globalTotalLng += app.restaurants[i].coordinates.longitude;
+function findCenterForMap(restaurants) {
+  var totalLat = 0;
+  var totalLng = 0;
+  for (var i = 0; i < restaurants.length; i++) {
+    totalLat += restaurants[i].coordinates.latitude;
+    totalLng += restaurants[i].coordinates.longitude;
   }
-  globalTotalLat /= app.restaurants.length;
-  globalTotalLng /= app.restaurants.length;
-  return [globalTotalLat, globalTotalLng];
+  totalLat /= restaurants.length;
+  totalLng /= restaurants.length;
+  return {lat: totalLat, lng: totalLng};
 }
 
 /**
- * modalEdits - set up modal and modify it
+ * modalSetup - set up modal and modify it
  * @param business
  */
-function modalEdits(business){
-  $('.modal-title').text(business.name);
-  $('.modal-title').removeClass('no-results-header');
-  var div = $('<div>',{
-    class: 'modal-div'
-  });
-  var img = $('<img>',{
-    src: business.image_url
-  });
-  var address = $('<h4>',{
-    text: 'Address'
-  });
-  var address_info = $('<p>',{
-    text: formatAddress(business.location)
-  });
-  var categories = $('<h4>',{
-    text: 'Categories'
-  });
+function modalSetup(business) {
+  $('.modal-title')
+    .removeClass('no-results-header')
+    .text(business.name);
+  var div = $('<div>', {class: 'modal-div'});
+  var img = $('<img>', {src: business.image_url});
+  var address = $('<h4>', {text: 'Address'});
+  var address_info = $('<p>', {text: formatAddress(business.location)});
+  var categories = $('<h4>', {text: 'Categories'});
   var categories_listing = business.categories[0].title;
-  for(var i = 1; i < business.categories.length; i++){
+  for (var i = 1; i < business.categories.length; i++) {
     categories_listing += ", " + business.categories[i].title;
   }
-  var categories_info = $('<p>',{
-    text: categories_listing
-  });
-  var rating = $('<h4>',{
-    text: 'Rating'
-  });
+  var categories_info = $('<p>', {text: categories_listing});
+  var rating = $('<h4>', {text: 'Rating'});
   var rating_info = $('<p>');
-  for(var i = 0; i < business.rating; i++){
-    var full_star = $('<img>',{
+  for (var i = 0; i < business.rating; i++) {
+    var full_star = $('<img>', {
       src: "img/Star.png",
       height: '20px'
     });
-    if(i+0.5 === business.rating){
-      var half_star = $('<img>',{
+    if (i + 0.5 === business.rating) {
+      var half_star = $('<img>', {
         src: "img/Half Star.png",
         height: '20px'
       });
@@ -291,7 +285,7 @@ function modalEdits(business){
  * @param address
  * @returns {string}
  */
-function formatAddress(address){
+function formatAddress(address) {
   return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
 }
 
@@ -308,7 +302,7 @@ function getCurrentLocation() {
 }
 
 /**
- * savePosition - Takes the position object and saves the lat/lng coords to the user location object
+ * savePosition - Takes the position object and saves the lat/lng coords to the user location property
  * @param {object} position
  */
 function savePosition(position) {
@@ -347,10 +341,9 @@ $(document).ready(function() {
 
 /**
  * wait for enter key to get pressed
- * @
  */
 $(document).keypress(function(e) {
-  if (e.which === 13) {
+  if (e.which === 13 && !$('.search-container').hasClass('fadeOutLeftBig')) {
     searchFunction();
   }
 });

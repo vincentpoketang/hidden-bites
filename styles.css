@@ -213,3 +213,11 @@ ul {
 .modal-div a {
   font-size: 14px;
 }
+
+a.modal-link {
+  display: block;
+  font-size: 3vmin;
+  cursor: pointer;
+  margin: 15px 0;
+  text-align: center;
+}

@@ -41,11 +41,11 @@ var map;
  * setUpClickHandlers - Event Handler when user clicks the search button
  */
 function setUpClickHandlers() {
-  $('#button-search').click(search);
-  $('#back-to-front').click(startNewSearch);
+  $('#button-search').click(searchClicked);
+  $('#back-to-front').click(startNewSearchClicked);
 }
 
-function search() {
+function searchClicked() {
   var $locationInput = $('#input-location');
   var $alert = $('#alert-location');
   if ($locationInput.val() === '') {
@@ -65,7 +65,7 @@ function search() {
   }
 }
 
-function startNewSearch() {
+function startNewSearchClicked() {
   $('#input-food').removeAttr('disabled');
   $('#input-location').removeAttr('disabled');
   $('.search-container')
@@ -95,9 +95,9 @@ function searchFunction() {
 }
 
 /**
- * removeCopyOfObjInArray
+ * removeDuplicateLocations
  */
-function removeCopyOfObjInArray(arr) {
+function removeDuplicateLocations(arr) {
   var coord = arr.map(rest => rest.coordinates);
   var lat = coord.map(objCoord => objCoord.latitude);
   var long = coord.map(objCoord => objCoord.longitude);
@@ -128,36 +128,44 @@ function getRestaurantData(term, search_location) {
     success: function(response) {
       app.restaurants = response;
 
-      // Occasionally Yelp bugs out and doesn't send us lat/long coordinates,
-      // if that's the case, we need to remove those places from the results array
+      // Occasionally Yelp bugs out and doesn't send us lat/long coordinates
+      // If that's the case, we need to remove those places from the results array
       for (var i = 0; i < app.restaurants.length; i++) {
         if (!app.restaurants[i].coordinates.latitude || !app.restaurants[i].coordinates.longitude) {
           app.restaurants.splice(i, 1);
         }
       }
-      app.restaurants = removeCopyOfObjInArray(app.restaurants);
+      app.restaurants = removeDuplicateLocations(app.restaurants);
       initMap();
       $('.map-title').text('Check out these ' + app.restaurants.length + ' spots near ' + app.search_location);
       if (app.restaurants.length === 0) {
-        noResultsModal();
+        showErrorModal();
       }
     },
     error: function() {
-      noResultsModal('It seems an error occurred! Try refreshing the page.');
+      showErrorModal('It seems an error occurred! Try refreshing the page.');
     }
   });
 }
 
 /**
- * noResultsModal - set up modal to display notice if search returns no results
+ * showErrorModal - set up modal to display notice if search returns no results
  */
-function noResultsModal(message) {
+function showErrorModal(message) {
   var $modal = $('.modal-body');
   $modal.empty();
   var $categories_div = $('<div>', {
     class: 'modal-div no-results'
   });
   var $modalTitle = $('.modal-title');
+  var $returnLink = $('<a>', {
+    class: 'modal-link',
+    text: 'Try a new search...'
+  });
+  $returnLink.click(function(){
+    $('#modal').modal('hide');
+    startNewSearchClicked();
+  });
   $modalTitle.text('Uh-Oh!');
   $modalTitle.addClass('no-results-header');
 
@@ -170,13 +178,14 @@ function noResultsModal(message) {
       $food_category_li.append(app.common_categories[i]);
       $categories_list.append($food_category_li);
     }
-    $modal.append($categories_div, $categories_list);
+    $modal.append($categories_div, $categories_list, $returnLink);
   } else {
     $categories_div.append(message);
+    $categories_div.append($returnLink);
     $modal.append($categories_div);
   }
 
-  $('#restaurant-modal').modal('show');
+  $('#modal').modal('show');
 }
 
 /**
@@ -213,12 +222,13 @@ function initMap() {
       modalSetup(business);
     });
   }
-  new MarkerClusterer(map, markers,
-    {imagePath: './img/m'});
+  new MarkerClusterer(map, markers, {imagePath: './img/m'});
 }
 
 /**
  * findCenterForMap - add up all lat/lng values and divide by total locations to obtain average/center for map display
+ *
+ * @param {array} restaurants - array of all restaurant results, containing lat/lng coordinates
  * @returns {object}
  */
 function findCenterForMap(restaurants) {
@@ -244,7 +254,7 @@ function modalSetup(business) {
   var div = $('<div>', {class: 'modal-div'});
   var img = $('<img>', {src: business.image_url});
   var address = $('<h4>', {text: 'Address'});
-  var address_info = $('<p>', {text: formatAddress(business.location)});
+  var address_info = $('<p>', {text: formatYelpAddress(business.location)});
   var categories = $('<h4>', {text: 'Categories'});
   var categories_listing = business.categories[0].title;
   for (var i = 1; i < business.categories.length; i++) {
@@ -277,15 +287,15 @@ function modalSetup(business) {
 
   $(div).append(img, address, address_info, categories, categories_info, rating, rating_info, website_url);
   $('.modal-body').empty().append(div);
-  $('#restaurant-modal').modal('show');
+  $('#modal').modal('show');
 }
 
 /**
- * formatAddress - format the address that is passed and return the formatted address
+ * formatYelpAddress - concatenate the yelp address properties into a string
  * @param address
  * @returns {string}
  */
-function formatAddress(address) {
+function formatYelpAddress(address) {
   return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
 }
 
@@ -297,7 +307,7 @@ function getCurrentLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(savePosition);
   } else {
-    noResultsModal("Geolocation is not supported by this browser.");
+    showErrorModal("Geolocation is not supported by this browser.");
   }
 }
 
@@ -325,7 +335,7 @@ function getAddressFromCoords() {
       $('#input-location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
     },
     error: function(response) {
-      noResultsModal('Unable to convert user\'s coordinates into address.');
+      showErrorModal('Unable to convert user\'s coordinates into address.');
     }
   });
 }
@@ -340,10 +350,18 @@ $(document).ready(function() {
 });
 
 /**
- * wait for enter key to get pressed
+ * handle enter and backspace key presses
  */
-$(document).keypress(function(e) {
-  if (e.which === 13 && !$('.search-container').hasClass('fadeOutLeftBig')) {
-    searchFunction();
+$(document).keydown(function(e) {
+  if ($('.search-container').hasClass('fadeOutLeftBig')) {
+    // backspace, which takes the user back to the intro screen
+    if (e.which === 8) {
+      startNewSearchClicked();
+    }
+  } else {
+    // enter key, which starts the search process
+    if (e.which === 13) {
+      searchClicked();
+    }
   }
 });

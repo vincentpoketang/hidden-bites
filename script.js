@@ -137,7 +137,8 @@ function getRestaurantData(term, search_location) {
       }
       app.restaurants = removeDuplicateLocations(app.restaurants);
       initMap();
-      $('.map-title').text('Check out these ' + app.restaurants.length + ' spots near ' + app.search_location);
+      $('#map-title-primary').text('Check out these ' + app.restaurants.length + ' spots ');
+      $('#map-title-extra').text('near ' + app.search_location);
       if (app.restaurants.length === 0) {
         showErrorModal();
       }

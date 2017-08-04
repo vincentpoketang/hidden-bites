@@ -122,6 +122,7 @@ function getRestaurantData(term, search_location) {
   $.ajax({
     method: 'get',
     dataType: 'json',
+    timeout: 5000,
     data: {
       'location': search_location,
       'term': term

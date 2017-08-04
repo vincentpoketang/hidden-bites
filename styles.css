@@ -126,6 +126,12 @@ h3 {
   padding: 0 60px;
 }
 
+@media (max-width: 768px) {
+  #map-title-extra {
+    display: none;
+  }
+}
+
 #back-to-front {
   position: absolute;
   margin: 9px;

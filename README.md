@@ -1,55 +1,21 @@
-# C4.17_hackathon 2
+# The Hole: Hole in the Wall Restaurant Finder
 
-Hackathon project involving the combination of different data sources into an application or game
+A first place Hackathon app that allows users to quickly find hole-in-the-wall restaurants based on a specified food category. A specific location can be searched if desired; otherwise the search results default to the user's current location. Mobile-first layout and design.
 
-### Requirements
-- Combine at least 3 **external** resources via AJAX requests and present their information in an application
-- Must be documented loosely on JSDOC standards
-- Must be issue-managed via meistertask 
-  - share the meistertask with daniel.paschal@learningfuze.com
-  - name your project 4.17 Team [your team number] Hackathon
+### Team Members
+- Jason Pau
+- Jinwoo Cho
+- TJ Kinion
+- Vincent Tang
 
-
-### Judging Criteria
-- **Appeal** : is it visually appealing / well put together
-- **Code Quality** : is the code properly formatted, are variables and functions well defined and documented
-- **Presentation** : How well is it presented during the unveiling session
-- **Task / Issue Management** : How well was the development process documented / controlled.  Were there well-defined issues, milestones, and project management
-- **Innovative / Transformative** : Did the project do something new and exciting?  Was it bold and tried to do things that haven't been done much.  Did it combine the data sources together in a way that was more useful than either source by itself
-- **Ease of Use / Understanding** : Was it easy to use the application / game, or if it was more complex, was the application or game able to provide you with tutorials or instructions that made understanding it a breeze.
-
-
-### Teams
-- Team 1
-  - Insoo 
-  - Paul 
-  - John K
-  - Jammy 
-
-- Team 2
-  - John M
-  - Jack 
-  - Anna 
-  - Johnny 
-
-- Team 3
-  - Adam 
-  - David 
-  - Steven 
-  - Regis 
-
-- Team 4
-  - Timothy 
-  - Jinwoo 
-  - Jason 
-  - Vincent
-
-- Team 5
-  - Alexandra
-  - Seung
-  - Ryan
-  - Jeff
-
-### Deadline: 
-- 1:00PM Friday, May 10, 2017
-
+### Technologies Used
+- HTML5
+- CSS3
+- Javascript
+- JQuery
+- Bootstrap
+- Yelp API
+- Google Maps
+- Google Place Autocomplete
+- Google Geocoding
+- native HTML5 Geolocation

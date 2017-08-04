@@ -66,6 +66,7 @@ function searchClicked() {
 }
 
 function startNewSearchClicked() {
+  $('#modal').modal('hide');
   $('#input-food').removeAttr('disabled');
   $('#input-location').removeAttr('disabled');
   $('.search-container')

@@ -76,7 +76,8 @@ function startNewSearchClicked() {
   // clear the existing results page so it'll be ready for the next search
   setTimeout(function() {
     map = {};
-    $('.map-header').text('Loading...');
+    $('#map-title-primary').text('Loading...');
+    $('#map-title-extra').text('');
     $('#map').empty();
   }, 1000);
 }
@@ -138,7 +139,7 @@ function getRestaurantData(term, search_location) {
       }
       app.restaurants = removeDuplicateLocations(app.restaurants);
       initMap();
-      $('#map-title-primary').text('Check out these ' + app.restaurants.length + ' spots ');
+      $('#map-title-primary').text(app.restaurants.length + ' spots found ');
       $('#map-title-extra').text('near ' + app.search_location);
       if (app.restaurants.length === 0) {
         showErrorModal();
@@ -355,12 +356,7 @@ $(document).ready(function() {
  * handle enter and backspace key presses
  */
 $(document).keydown(function(e) {
-  if ($('.search-container').hasClass('fadeOutLeftBig')) {
-    // backspace, which takes the user back to the intro screen
-    if (e.which === 8) {
-      startNewSearchClicked();
-    }
-  } else {
+  if (!$('.search-container').hasClass('fadeOutLeftBig')) {
     // enter key, which starts the search process
     if (e.which === 13) {
       searchClicked();

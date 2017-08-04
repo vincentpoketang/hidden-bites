@@ -189,6 +189,11 @@ button.close {
   height: 100%;
 }
 
+.no-results {
+  font-size: 3vmin;
+  padding: 2vh 1vw;
+}
+
 li {
   font-size: 3vmin;
 }
@@ -200,6 +205,10 @@ ul {
   margin-bottom: 10px;
   flex-flow: column wrap;
   align-content: stretch;
+}
+
+.no-results-header {
+  font-size: 36px;
 }
 
 .modal-div > img {

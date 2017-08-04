@@ -42,7 +42,7 @@ var map;
  */
 function setUpClickHandlers() {
   $('#button-search').click(searchClicked);
-  $('#back-to-front').click(startNewSearchClicked);
+  $('#back-to-front').click(startNewSearch);
 }
 
 function searchClicked() {
@@ -65,7 +65,7 @@ function searchClicked() {
   }
 }
 
-function startNewSearchClicked() {
+function startNewSearch() {
   $('#modal').modal('hide');
   $('#input-food').removeAttr('disabled');
   $('#input-location').removeAttr('disabled');
@@ -155,6 +155,7 @@ function getRestaurantData(term, search_location) {
  * showErrorModal - set up modal to display notice if search returns no results
  */
 function showErrorModal(message) {
+  startNewSearch();
   var $modal = $('.modal-body');
   $modal.empty();
   var $categories_div = $('<div>', {
@@ -167,7 +168,7 @@ function showErrorModal(message) {
   });
   $returnLink.click(function(){
     $('#modal').modal('hide');
-    startNewSearchClicked();
+    startNewSearch();
   });
   $modalTitle.text('Uh-Oh!');
   $modalTitle.addClass('no-results-header');

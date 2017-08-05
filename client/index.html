@@ -5,26 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#E67428">
   <title>The Hole - Hole in the Wall Restaurant Finder</title>
-  <link rel="icon"
-        type="image/png"
-        href="./img/H.png">
+  <link rel="icon" type="image/png" href="../img/favicon.png">
   <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="googleMapRetro.js"></script>
-  <script src="markerclusterer.js"></script>
-  <script type="text/javascript" src="script.js?v=1"></script>
+  <script type="text/javascript" src="../js/google-map-retro.js"></script>
+  <script src="../js/marker-clusterer.min.js"></script>
+  <script type="text/javascript" src="../js/script.js"></script>
 </head>
 <body>
 <div class="main-container">
   <!-- initial screen that takes the user input -->
   <div class="search-container">
-    <div class="logo" id="logo-container">
-      <img src="img/the-hole.png" height="136" width="330"/>
-    </div>
+    <img id="logo" src="../img/hidden-bites.png" height="190" width="300"/>
     <p class="intro-text">Tired of your regular restaurant chain?<br/>
       Time to find your own hole in the wall!</p>
     <form class="" id="search-form">
@@ -44,7 +40,7 @@
     </form>
   </div>
 
-  <!-- result/map area - show this with .hide when the button is clicked -->
+  <!-- result/map area - show this when the search button is clicked -->
   <div class="results">
     <div id="map-header">
       <button id="back-to-front" class="glyphicon glyphicon-chevron-left"></button>
@@ -55,10 +51,10 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- modal -->
 <div id="modal" class="modal fade" role="dialog">
   <div class="modal-dialog">
-    <!-- Modal content-->
+    <!-- modal inner content -->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>

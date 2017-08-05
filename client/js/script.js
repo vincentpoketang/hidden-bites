@@ -131,7 +131,7 @@ function getRestaurantData(term, searchLocation) {
       'location': searchLocation,
       'term': term
     },
-    url: 'yelp.php',
+    url: 'client/yelp.php',
     success: function(response) {
       app.restaurants = response;
 

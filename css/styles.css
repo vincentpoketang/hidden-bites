@@ -32,7 +32,7 @@ p {
   display: inline-block;
   position: absolute;
   z-index: 2;
-  background: white url("img/background.jpg") no-repeat center;
+  background: white url('../img/background.jpg') no-repeat center;
   background-size: cover;
   height: 100%;
   width: 100%;
@@ -94,7 +94,7 @@ h3 {
   height: 100%;
   width: 100%;
   margin: 0;
-  background: url('img/loading.gif') no-repeat center;
+  background: url('../img/loading.gif') no-repeat center;
   box-sizing: border-box;
   padding-top: 65px;
 }
@@ -177,12 +177,12 @@ button.close {
 }
 
 .no-results {
-  font-size: 16px;
+  font-size: 3vmin;
   padding: 2vh 1vw;
 }
 
 li {
-  font-size: 16px;
+  font-size: 3vmin;
 }
 
 ul {

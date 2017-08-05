@@ -151,7 +151,7 @@ function getRestaurantData(term, searchLocation) {
       }
     },
     error: function() {
-      showErrorModal('It seems we weren\'t able find anything...perhaps try another search?');
+      showErrorModal('Hmmm, nothing found. Perhaps try another search?');
     }
   });
 }
@@ -217,7 +217,7 @@ function initMap() {
     markers[i] = new google.maps.Marker({
       position: new google.maps.LatLng(app.restaurants[i].coordinates.latitude, app.restaurants[i].coordinates.longitude),
       map: map,
-      icon: 'img/label-bg.png',
+      icon: '../img/label-bg.png',
       mapId: i,
       label: restaurantName
     });
@@ -226,7 +226,7 @@ function initMap() {
       modalSetup(business);
     });
   }
-  new MarkerClusterer(map, markers, {imagePath: './img/m'});
+  new MarkerClusterer(map, markers, {imagePath: '../img/m'});
 }
 
 /**
@@ -261,19 +261,19 @@ function modalSetup(business) {
   var $categories = $('<h4>', {text: 'Categories'});
   var categoriesListing = business.categories[0].title;
   for (var i = 1; i < business.categories.length; i++) {
-    categoriesListing += ", " + business.categories[i].title;
+    categoriesListing += ', ' + business.categories[i].title;
   }
   var $categoriesInfo = $('<p>', {text: categoriesListing});
   var $rating = $('<h4>', {text: 'Rating'});
   var $ratingInfo = $('<p>');
   for (var i = 0; i < business.rating; i++) {
     var $fullStar = $('<img>', {
-      src: "img/star.png",
+      src: '../img/star.png',
       height: '20px'
     });
     if (i + 0.5 === business.rating) {
       var $halfStar = $('<img>', {
-        src: "img/half-star.png",
+        src: '../img/half-star.png',
         height: '20px'
       });
       $ratingInfo.append($halfStar);
@@ -299,7 +299,7 @@ function modalSetup(business) {
  * @returns {string} address in string format
  */
 function formatYelpAddress(address) {
-  return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
+  return address.address1 + ', ' + address.city + ', ' + address.state + ' ' + address.zip_code;
 }
 
 /**
@@ -310,7 +310,7 @@ function getCurrentLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(savePosition);
   } else {
-    showErrorModal("Geolocation is not supported by this browser.");
+    showErrorModal('Geolocation is not supported by this browser.');
   }
 }
 

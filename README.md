@@ -1,7 +1,21 @@
-# Hole in the Wall Restaurant Finder
+# Hidden Bites: Hole in the Wall Restaurant Finder
 
-This app allows users to quickly find hole-in-the-wall restaurants based on a specified food category. A specific location can be searched if desired; otherwise the search results default to the user's current location.
+A first place Hackathon app that allows users to quickly find hole-in-the-wall restaurants based on a specified food category. A specific location can be searched if desired; otherwise the search results default to the user's current location. Mobile-first layout and design.
 
-- Worked with a team of four developers to build a completed project.
-- Mobile-first layout and design.
-- Integrates multiple APIs including Yelp, Google Maps, Google Place Autocomplete, Google Geocoding, and native HTML5 Geolocation.
+### Team Members
+- Jason Pau
+- Jinwoo Cho
+- TJ Kinion
+- Vincent Tang
+
+### Technologies Used
+- HTML5
+- CSS3
+- Javascript
+- JQuery
+- Bootstrap
+- Yelp API
+- Google Maps
+- Google Place Autocomplete
+- Google Geocoding
+- Native HTML5 Geolocation

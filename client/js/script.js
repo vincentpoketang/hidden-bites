@@ -131,7 +131,7 @@ function getRestaurantData(term, searchLocation) {
       'location': searchLocation,
       'term': term
     },
-    url: 'yelp.php',
+    url: 'client/yelp.php',
     success: function(response) {
       app.restaurants = response;
 
@@ -217,7 +217,7 @@ function initMap() {
     markers[i] = new google.maps.Marker({
       position: new google.maps.LatLng(app.restaurants[i].coordinates.latitude, app.restaurants[i].coordinates.longitude),
       map: map,
-      icon: 'img/label-bg.png',
+      icon: 'client/img/label-bg.png',
       mapId: i,
       label: restaurantName
     });
@@ -226,7 +226,7 @@ function initMap() {
       modalSetup(business);
     });
   }
-  new MarkerClusterer(map, markers, {imagePath: 'img/m'});
+  new MarkerClusterer(map, markers, {imagePath: 'client/img/m'});
 }
 
 /**
@@ -268,12 +268,12 @@ function modalSetup(business) {
   var $ratingInfo = $('<p>');
   for (var i = 0; i < business.rating; i++) {
     var $fullStar = $('<img>', {
-      src: 'img/star.png',
+      src: 'client/img/star.png',
       height: '20px'
     });
     if (i + 0.5 === business.rating) {
       var $halfStar = $('<img>', {
-        src: 'img/half-star.png',
+        src: 'client/img/half-star.png',
         height: '20px'
       });
       $ratingInfo.append($halfStar);

@@ -4,13 +4,13 @@
 
 var app = {
   restaurants: [],
-  search_term: 'hole in the wall ',
-  user_location: {
+  searchTerm: 'hole in the wall ',
+  userLocation: {
     lat: 33.634910999999995,
     lng: -117.7404998
   },
-  search_location: this.user_location,
-  common_categories: [
+  searchLocation: this.userLocation,
+  commonCategories: [
     'Thai',
     'Mexican',
     'Japanese',
@@ -42,7 +42,7 @@ var map;
  */
 function setUpClickHandlers() {
   $('#button-search').click(searchClicked);
-  $('#back-to-front').click(startNewSearchClicked);
+  $('#back-to-front').click(startNewSearch);
 }
 
 function searchClicked() {
@@ -59,13 +59,14 @@ function searchClicked() {
     $alert
       .removeClass('animated bounceIn')
       .css('display', 'none');
-    searchFunction();
+    runSearch();
     $('#input-food').attr('disabled', 'disabled');
     $locationInput.attr('disabled', 'disabled');
   }
 }
 
-function startNewSearchClicked() {
+function startNewSearch() {
+  $('#modal').modal('hide');
   $('#input-food').removeAttr('disabled');
   $('#input-location').removeAttr('disabled');
   $('.search-container')
@@ -75,35 +76,41 @@ function startNewSearchClicked() {
   // clear the existing results page so it'll be ready for the next search
   setTimeout(function() {
     map = {};
-    $('.map-header').text('Loading...');
+    $('#map-title-primary').text('Loading...');
+    $('#map-title-extra').text('');
     $('#map').empty();
   }, 1000);
 }
 
 /**
- * search function
+ * runSearch - gather up our search terms, pass them into our AJAX call function, and show the loading screen
  */
-function searchFunction() {
-  app.search_term = 'hole in the wall ';
-  app.user_input = $('#input-food').val();
-  app.search_term += app.user_input;
-  app.search_location = $('#input-location').val();
-  getRestaurantData(app.search_term, app.search_location);
+function runSearch() {
+  app.searchTerm = 'hole in the wall ';
+  app.userInput = $('#input-food').val();
+  app.searchTerm += app.userInput;
+  app.searchLocation = $('#input-location').val();
+  getRestaurantData(app.searchTerm, app.searchLocation);
   $('.search-container')
     .removeClass('animated fadeInLeftBig')
     .addClass('animated fadeOutLeftBig');
 }
 
 /**
- * removeDuplicateLocations
+ * removeDuplicateLocations - removes the
+ * @param {array} arr - array of restaurant objects
+ * @return {array} returnArray - cleaned up array of restaurant objects
  */
 function removeDuplicateLocations(arr) {
-  var coord = arr.map(rest => rest.coordinates);
-  var lat = coord.map(objCoord => objCoord.latitude);
-  var long = coord.map(objCoord => objCoord.longitude);
+  var coordinatesArray = arr.map(rest => rest.coordinates); // create array of objects with lat/lng props
+  var lat = coordinatesArray.map(restaurant => restaurant.latitude); // create array of latitude numbers
+  var lng = coordinatesArray.map(restaurant => restaurant.longitude); // create array of longitude numbers
   var returnArray = [];
+
   for (var i = 0; i < arr.length; i++) {
-    if (lat.indexOf(lat[i]) === i && long.indexOf(long[i]) === i) {
+    // if we encounter a lat/lng that already exists, indexOf will return the index of the first occurrence,
+    // thus the comparison will fail and that restaurant will not be added to the output array
+    if (lat.indexOf(lat[i]) === i && lng.indexOf(lng[i]) === i) {
       returnArray.push(arr[i]);
     }
   }
@@ -111,24 +118,24 @@ function removeDuplicateLocations(arr) {
 }
 
 /**
- * getRestaurantData - get json info from php file and if it is success, push info to app.restaurants
- *
- * @params term - input of the term the user is searching
- * @params app.search_location - the area the user input and/or their current location
+ * getRestaurantData - call our yelp API and if it is successful, push the returned JSON info to app.restaurants
+ * @params {string} term - the type of food the user is looking for
+ * @params {string} searchLocation - the location/area to look in
  */
-function getRestaurantData(term, search_location) {
+function getRestaurantData(term, searchLocation) {
   $.ajax({
     method: 'get',
     dataType: 'json',
+    timeout: 5000,
     data: {
-      'location': search_location,
+      'location': searchLocation,
       'term': term
     },
-    url: 'yelp.php',
+    url: 'client/yelp.php',
     success: function(response) {
       app.restaurants = response;
 
-      // Occasionally Yelp bugs out and doesn't send us lat/long coordinates
+      // Occasionally Yelp bugs out and doesn't send us lat/long coordinates for a restaurant
       // If that's the case, we need to remove those places from the results array
       for (var i = 0; i < app.restaurants.length; i++) {
         if (!app.restaurants[i].coordinates.latitude || !app.restaurants[i].coordinates.longitude) {
@@ -137,13 +144,14 @@ function getRestaurantData(term, search_location) {
       }
       app.restaurants = removeDuplicateLocations(app.restaurants);
       initMap();
-      $('.map-title').text('Check out these ' + app.restaurants.length + ' spots near ' + app.search_location);
+      $('#map-title-primary').text(app.restaurants.length + ' spots found ');
+      $('#map-title-extra').text('near ' + app.searchLocation);
       if (app.restaurants.length === 0) {
         showErrorModal();
       }
     },
     error: function() {
-      showErrorModal('It seems an error occurred! Try refreshing the page.');
+      showErrorModal('Hmmm, nothing found. Perhaps try another search?');
     }
   });
 }
@@ -152,37 +160,29 @@ function getRestaurantData(term, search_location) {
  * showErrorModal - set up modal to display notice if search returns no results
  */
 function showErrorModal(message) {
+  startNewSearch();
   var $modal = $('.modal-body');
   $modal.empty();
-  var $categories_div = $('<div>', {
+  var $categoriesDiv = $('<div>', {
     class: 'modal-div no-results'
   });
   var $modalTitle = $('.modal-title');
-  var $returnLink = $('<a>', {
-    class: 'modal-link',
-    text: 'Try a new search...'
-  });
-  $returnLink.click(function(){
-    $('#modal').modal('hide');
-    startNewSearchClicked();
-  });
   $modalTitle.text('Uh-Oh!');
   $modalTitle.addClass('no-results-header');
 
   if (!message) {
-    $categories_div.append('Sorry but there are no results for ' + app.user_input + ' near ' + app.search_location + '.');
-    $categories_div.append('<br>' + 'Try one of these common food categories:');
-    var $categories_list = $('<ul>');
-    for (var i = 0; i < app.common_categories.length; i++) {
-      var $food_category_li = $('<li>');
-      $food_category_li.append(app.common_categories[i]);
-      $categories_list.append($food_category_li);
+    $categoriesDiv.append('Sorry but there are no results for ' + app.userInput + ' near ' + app.searchLocation + '.');
+    $categoriesDiv.append('<br>' + 'Try one of these common food categories:');
+    var $categoriesList = $('<ul>');
+    for (var i = 0; i < app.commonCategories.length; i++) {
+      var $foodCategoryLi = $('<li>');
+      $foodCategoryLi.append(app.commonCategories[i]);
+      $categoriesList.append($foodCategoryLi);
     }
-    $modal.append($categories_div, $categories_list, $returnLink);
+    $modal.append($categoriesDiv, $categoriesList);
   } else {
-    $categories_div.append(message);
-    $categories_div.append($returnLink);
-    $modal.append($categories_div);
+    $categoriesDiv.append(message);
+    $modal.append($categoriesDiv);
   }
 
   $('#modal').modal('show');
@@ -193,7 +193,7 @@ function showErrorModal(message) {
  */
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    center: findCenterForMap(app.restaurants),
+    center: getCenterForMap(app.restaurants),
     zoom: 13,
     streetViewControl: false,
     mapTypeControl: false,
@@ -203,35 +203,38 @@ function initMap() {
 
   var markers = [];
   for (var i = 0; i < app.restaurants.length; i++) {
-    var restaurant_name = "";
+    var restaurantName = "";
+
+    // create a 13 character long string from the restaurant name
     for (var j = 0; j < 13 && j < app.restaurants[i].name.length; j++) {
-      restaurant_name += app.restaurants[i].name[j];
+      restaurantName += app.restaurants[i].name[j];
     }
+    // if the restaurant name is greater than 13 characters, add an ellipsis so users know
     if (app.restaurants[i].name.length > 13) {
-      restaurant_name += '...';
+      restaurantName += '...';
     }
+
     markers[i] = new google.maps.Marker({
       position: new google.maps.LatLng(app.restaurants[i].coordinates.latitude, app.restaurants[i].coordinates.longitude),
       map: map,
-      icon: 'img/label-bg.png',
+      icon: 'client/img/label-bg.png',
       mapId: i,
-      label: restaurant_name
+      label: restaurantName
     });
     markers[i].addListener('click', function() {
       var business = app.restaurants[this.mapId];
       modalSetup(business);
     });
   }
-  new MarkerClusterer(map, markers, {imagePath: './img/m'});
+  new MarkerClusterer(map, markers, {imagePath: 'client/img/m'});
 }
 
 /**
- * findCenterForMap - add up all lat/lng values and divide by total locations to obtain average/center for map display
- *
+ * getCenterForMap - add up all lat/lng values and divide by total locations to obtain average/center for map display
  * @param {array} restaurants - array of all restaurant results, containing lat/lng coordinates
  * @returns {object}
  */
-function findCenterForMap(restaurants) {
+function getCenterForMap(restaurants) {
   var totalLat = 0;
   var totalLng = 0;
   for (var i = 0; i < restaurants.length; i++) {
@@ -244,59 +247,59 @@ function findCenterForMap(restaurants) {
 }
 
 /**
- * modalSetup - set up modal and modify it
- * @param business
+ * modalSetup - set up restaurant modals with data from yelp API
+ * @param {object} business
  */
 function modalSetup(business) {
   $('.modal-title')
     .removeClass('no-results-header')
     .text(business.name);
-  var div = $('<div>', {class: 'modal-div'});
-  var img = $('<img>', {src: business.image_url});
-  var address = $('<h4>', {text: 'Address'});
-  var address_info = $('<p>', {text: formatYelpAddress(business.location)});
-  var categories = $('<h4>', {text: 'Categories'});
-  var categories_listing = business.categories[0].title;
+  var $div = $('<div>', {class: 'modal-div'});
+  var $img = $('<img>', {src: business.image_url});
+  var $address = $('<h4>', {text: 'Address'});
+  var $addressInfo = $('<p>', {text: formatYelpAddress(business.location)});
+  var $categories = $('<h4>', {text: 'Categories'});
+  var categoriesListing = business.categories[0].title;
   for (var i = 1; i < business.categories.length; i++) {
-    categories_listing += ", " + business.categories[i].title;
+    categoriesListing += ', ' + business.categories[i].title;
   }
-  var categories_info = $('<p>', {text: categories_listing});
-  var rating = $('<h4>', {text: 'Rating'});
-  var rating_info = $('<p>');
+  var $categoriesInfo = $('<p>', {text: categoriesListing});
+  var $rating = $('<h4>', {text: 'Rating'});
+  var $ratingInfo = $('<p>');
   for (var i = 0; i < business.rating; i++) {
-    var full_star = $('<img>', {
-      src: "img/Star.png",
+    var $fullStar = $('<img>', {
+      src: 'client/img/star.png',
       height: '20px'
     });
     if (i + 0.5 === business.rating) {
-      var half_star = $('<img>', {
-        src: "img/Half Star.png",
+      var $halfStar = $('<img>', {
+        src: 'client/img/half-star.png',
         height: '20px'
       });
-      $(rating_info).append(half_star);
+      $ratingInfo.append($halfStar);
     }
     else {
-      $(rating_info).append(full_star);
+      $ratingInfo.append($fullStar);
     }
   }
-  var website_url = $('<a>', {
+  var $websiteUrl = $('<a>', {
     text: 'View on Yelp',
     href: business.url,
     target: '_blank'
   });
 
-  $(div).append(img, address, address_info, categories, categories_info, rating, rating_info, website_url);
-  $('.modal-body').empty().append(div);
+  $div.append($img, $address, $addressInfo, $categories, $categoriesInfo, $rating, $ratingInfo, $websiteUrl);
+  $('.modal-body').empty().append($div);
   $('#modal').modal('show');
 }
 
 /**
  * formatYelpAddress - concatenate the yelp address properties into a string
- * @param address
- * @returns {string}
+ * @param {object} address in object format
+ * @returns {string} address in string format
  */
 function formatYelpAddress(address) {
-  return address.address1 + ", " + address.city + ", " + address.state + " " + address.zip_code;
+  return address.address1 + ', ' + address.city + ', ' + address.state + ' ' + address.zip_code;
 }
 
 /**
@@ -307,7 +310,7 @@ function getCurrentLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(savePosition);
   } else {
-    showErrorModal("Geolocation is not supported by this browser.");
+    showErrorModal('Geolocation is not supported by this browser.');
   }
 }
 
@@ -316,7 +319,7 @@ function getCurrentLocation() {
  * @param {object} position
  */
 function savePosition(position) {
-  app.user_location = {
+  app.userLocation = {
     lat: position.coords.latitude,
     lng: position.coords.longitude
   };
@@ -330,18 +333,18 @@ function getAddressFromCoords() {
   $.ajax({
     method: 'get',
     dataType: 'json',
-    url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + app.user_location.lat + ',' + app.user_location.lng + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
+    url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + app.userLocation.lat + ',' + app.userLocation.lng + '&key=AIzaSyAqq4jH5c4jX1asTtuCjYye7CrPotGihto',
     success: function(response) {
       $('#input-location').val(response.results[0].address_components[1].short_name + ', ' + response.results[0].address_components[3].short_name);
     },
-    error: function(response) {
+    error: function() {
       showErrorModal('Unable to convert user\'s coordinates into address.');
     }
   });
 }
 
 /**
- * load stuff when document start
+ * initialize Google Places Autocomplete API and click handlers, and get our current location
  */
 $(document).ready(function() {
   new google.maps.places.Autocomplete(document.getElementById('input-location'));
@@ -350,16 +353,10 @@ $(document).ready(function() {
 });
 
 /**
- * handle enter and backspace key presses
+ * handle enter keypress and attempt to run the search (if we're on the search screen)
  */
 $(document).keydown(function(e) {
-  if ($('.search-container').hasClass('fadeOutLeftBig')) {
-    // backspace, which takes the user back to the intro screen
-    if (e.which === 8) {
-      startNewSearchClicked();
-    }
-  } else {
-    // enter key, which starts the search process
+  if (!$('.search-container').hasClass('fadeOutLeftBig')) {
     if (e.which === 13) {
       searchClicked();
     }

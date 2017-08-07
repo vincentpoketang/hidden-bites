@@ -1,4 +1,4 @@
-# The Hole: Hole in the Wall Restaurant Finder
+# Hidden Bites: Hole in the Wall Restaurant Finder
 
 A first place Hackathon app that allows users to quickly find hole-in-the-wall restaurants based on a specified food category. A specific location can be searched if desired; otherwise the search results default to the user's current location. Mobile-first layout and design.
 
@@ -18,4 +18,4 @@ A first place Hackathon app that allows users to quickly find hole-in-the-wall r
 - Google Maps
 - Google Place Autocomplete
 - Google Geocoding
-- native HTML5 Geolocation
+- Native HTML5 Geolocation
